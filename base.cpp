@@ -5,29 +5,29 @@
 #include<Windows.h>
 //#define BACK_DEBUG
 struct settings {
-	int map_height;        //µØÍ¼¸ß¶È
-	int map_width;         //µØÍ¼¿í¶È
-	int map_board_length;  //Ìø°å³¤¶È
-	int player_height;     //Íæ¼Ò¸ß¶È
-	int player_width;      //Íæ¼Ò¿í¶È
-	int player_drop_speed; //Íæ¼ÒÏÂÂäËÙ¶È
-	int dp_tpf;            //¶àÉÙtickË¢ÐÂ»­Ãæ
-	int dp_tpl;            //¶àÉÙtickË¢ÐÂÒ»ÐÐ
+	int map_height;        //åœ°å›¾é«˜åº¦
+	int map_width;         //åœ°å›¾å®½åº¦
+	int map_board_length;  //è·³æ¿é•¿åº¦
+	int player_height;     //çŽ©å®¶é«˜åº¦
+	int player_width;      //çŽ©å®¶å®½åº¦
+	int player_drop_speed; //çŽ©å®¶ä¸‹è½é€Ÿåº¦
+	int dp_tpf;            //å¤šå°‘tickåˆ·æ–°ç”»é¢
+	int dp_tpl;            //å¤šå°‘tickåˆ·æ–°ä¸€è¡Œ
 };
 settings set;
 struct player {
-	int x, y;              //Íæ¼ÒÎ»ÖÃ
+	int x, y;              //çŽ©å®¶ä½ç½®
 };
 struct player player1;
 struct board {
-	int line_id;           //°åËùÔÚÐÐ
-	int x;                 //×ó¶ËµãÎ»ÖÃ
-	char type;             //°åµÄÀàÐÍ£¬Ä¬ÈÏÎª0
-	struct board* next;    //ÏÂÒ»¸ö½Úµã
+	int line_id;           //æ¿æ‰€åœ¨è¡Œ
+	int x;                 //å·¦ç«¯ç‚¹ä½ç½®
+	char type;             //æ¿çš„ç±»åž‹ï¼Œé»˜è®¤ä¸º0
+	struct board* next;    //ä¸‹ä¸€ä¸ªèŠ‚ç‚¹
 };
 struct board* head = NULL;
 struct board* tail = NULL;
-void add_board(int line_id, int x, char type) { //¼Ó°å
+void add_board(int line_id, int x, char type) { //åŠ æ¿
 	struct board* p = (struct board*)malloc(sizeof(struct board));
 	p->line_id = line_id;
 	p->x = x;
@@ -40,7 +40,7 @@ void add_board(int line_id, int x, char type) { //¼Ó°å
 	tail->next = p;
 	tail = p;
 }
-void delete_board(int line_id) {  //É¾³ýÒ»ÐÐµÄ°å
+void delete_board(int line_id) {  //åˆ é™¤ä¸€è¡Œçš„æ¿
 	struct board* p;
 	while (head != NULL && head->line_id == line_id) {
 		p = head;
@@ -51,11 +51,11 @@ void delete_board(int line_id) {  //É¾³ýÒ»ÐÐµÄ°å
 		free(p);
 	}
 }
-void gen_board(struct settings* settings, int line_id) {//Éú³ÉÒ»ÐÐµÄ°å
+void gen_board(struct settings* settings, int line_id) {//ç”Ÿæˆä¸€è¡Œçš„æ¿
 	int board_width = settings->map_board_length;
 	int map_width = settings->map_width - board_width;
 	for (int i = 1; i <= map_width; i++) {
-		if (rand() % 5 == 1) { //´ó¸ÅÎå·ÖÖ®Ò»¸ÅÂÊ¼ÓÒ»¸ö°å£¬³õÊ¼»¯µÄÊ±ºòÖØÖÃÒ»ÏÂÖÖ×Ó£¬ÒÔºó¿´ÄÜ²»ÄÜÔÚÉèÖÃÀïÃæ¶¨Òå¸ÅÂÊ
+		if (rand() % 5 == 1) { //å¤§æ¦‚äº”åˆ†ä¹‹ä¸€æ¦‚çŽ‡åŠ ä¸€ä¸ªæ¿ï¼Œåˆå§‹åŒ–çš„æ—¶å€™é‡ç½®ä¸€ä¸‹ç§å­ï¼Œä»¥åŽçœ‹èƒ½ä¸èƒ½åœ¨è®¾ç½®é‡Œé¢å®šä¹‰æ¦‚çŽ‡
 			add_board(line_id, i, 0);
 			i += board_width;
 		}
@@ -64,7 +64,7 @@ void gen_board(struct settings* settings, int line_id) {//Éú³ÉÒ»ÐÐµÄ°å
 void init() {
 	FILE* open = fopen("D:\\gamedata\\gameinit.dat", "r");
 	if (open == NULL) {
-		printf("È±ÉÙÅäÖÃÎÄ¼þ");
+		printf("ç¼ºå°‘é…ç½®æ–‡ä»¶");
 		exit(0);
 	}
 	fscanf_s(open, "%d", &set.map_height);
