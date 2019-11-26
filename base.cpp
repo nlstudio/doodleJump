@@ -3,37 +3,43 @@
 #include<cstdlib>
 #include<ctime>
 #include<Windows.h>
+#define F(time) player1.pre_board+set.velocity_UD*time-0.5*set.player_drop_acc*time*time
 //#define BACK_DEBUG
 extern int get_key_state();
+/*速度及加速度的单位为行每秒或每秒平方*/
 struct settings {
-	int map_height;          //地图高度
-	int map_width;           //地图宽度
-	int map_board_length;    //跳板长度
-	int player_height;       //玩家高度
-	int player_width;        //玩家宽度
-	float player_drop_speed; //玩家下落速度
-	int dp_tpf;              //多少tick刷新画面
-	int dp_tpl;              //多少tick刷新一行
-	int line;                //当前游戏的最底端所在行的编号
-	float velocity_UD;       //向上弹起的初速度
-	float velocity_LR;       //左右移动的速度
+	int map_height;               //地图高度
+	int map_width;                //地图宽度
+	int map_board_length;         //跳板长度
+	int player_height;            //玩家高度
+	int player_width;             //玩家宽度
+	float player_drop_acc;        //玩家下落加速度
+	int dp_tpf;                   //多少tick刷新画面
+	int dp_tpl;                   //多少tick刷新一行
+	float velocity_UD;            //向上弹起的初速度
+	float velocity_LR;            //左右移动的速度
 };
 settings set;
 struct player {
-	int x, y;                //玩家位置,以玩家最下端的中间位置为基准
-	int pre_time;            //上一次碰撞的时间；
+	float x;
+	int y;                        //玩家位置,以玩家最下端的中间位置为基准
+	unsigned long long pre_time;  //上一次碰撞的时间
+	int pre_board;                //上一次碰撞的板的所在行
 };
 struct player player1;
 struct board {
-	int line_id;             //板所在行
-	int x;                   //左端点位置
-	char type;               //板的类型，默认为0
-	struct board* next;      //下一个节点
+	int line_id;                  //板所在行
+	int x;                        //左端点位置
+	char type;                    //板的类型，默认为0
+	struct board* next;           //下一个节点
 };
 struct board* head = NULL;
 struct board* tail = NULL;
 void add_board(int line_id, int x, char type) { //加板
 	struct board* p = (struct board*)malloc(sizeof(struct board));
+	while (p == NULL) {
+		p = (struct board*)malloc(sizeof(struct board));
+	}
 	p->line_id = line_id;
 	p->x = x;
 	p->type = type;
@@ -69,7 +75,7 @@ void gen_board(struct settings* settings, int line_id) {//生成一行的板
 void multi_gen_board(int start_line_id, int end_line_id) {//左右为闭区间
 	while (start_line_id <= end_line_id) {
 		gen_board(&set, start_line_id);
-		start_line_id++;
+		start_line_id += 3;
 	}
 }
 int land_on_board(struct board* board_HEAD,player* Player) {
@@ -84,14 +90,14 @@ int land_on_board(struct board* board_HEAD,player* Player) {
 	return 0;
 }
 //int get_key_state(){
-//	Sleep(100);
+//	Sleep(8);
 //	if (GetAsyncKeyState(VK_LEFT) & 0x25)return -1;
 //	if (GetAsyncKeyState('A') & 0x41)return -1;
 //	if (GetAsyncKeyState(VK_RIGHT) & 0x27)return 1;
 //	if (GetAsyncKeyState('D') & 0x43)return 1;
 //	return 0;
 //}
-void init() {
+void init() {  //游戏数据的初始化
 	FILE* open = fopen("D:\\gamedata\\gameinit.dat", "r");
 	if (open == NULL) {
 		printf("缺少配置文件");
@@ -102,20 +108,53 @@ void init() {
 	fscanf_s(open, "%d", &set.map_board_length);
 	fscanf_s(open, "%d", &set.player_height);
 	fscanf_s(open, "%d", &set.player_width);
-	fscanf_s(open, "%f", &set.player_drop_speed);
+	fscanf_s(open, "%f", &set.player_drop_acc);
 	fscanf_s(open, "%d", &set.dp_tpf);
 	fscanf_s(open, "%d", &set.dp_tpl);
 	fscanf_s(open, "%f", &set.velocity_UD);
 	fscanf_s(open, "%f", &set.velocity_LR);
-	set.line = 1;
 	fclose(open);
 	player1.x = set.map_width >> 1;
 	player1.y = 1;
 }
 void start_game() {
-	multi_gen_board(1, 100);
+	add_board(1, (set.map_width >> 1) - 1, 0);
+	multi_gen_board(4, 100);
+	int current_board = 100;  //记录当前板生成到了哪一行
+	player1.pre_time = GetTickCount64();
+	player1.pre_board = 1;
 	while (1) {
-
+		unsigned long long current_time = GetTickCount64();//此次操作的基准时间
+		//读取键盘输入
+		int key_state = get_key_state();
+		//更新x方向位置
+		player1.x += (key_state * set.velocity_LR);
+		if (player1.x <= 1) {
+			player1.x = 1;
+		}
+		if (player1.x >= set.map_width) {
+			player1.x = set.map_width;
+		}
+		//更新y方向位置
+		float time = (float)(current_time - player1.pre_time) / 1000;
+		player1.y = F(time);
+		//判断是否应生成新板
+		if (player1.y >= current_board - 20) {
+			multi_gen_board(current_board + 1, current_board + 100);
+			current_board += 100;
+		}
+		//判断是否坠入虚空（暂时空缺）
+		//判断是否碰撞
+		if (land_on_board(head, &player1)) {
+			player1.pre_board = player1.y;
+			player1.pre_time = current_time;
+		}
+		//提交渲染（暂时空缺）
+		//线程休息
+		DWORD end_time = GetTickCount64() - current_time;
+		if (end_time > 0) {
+			Sleep(end_time);
+		}
 	}
 }
 #ifdef BACK_DEBUG
