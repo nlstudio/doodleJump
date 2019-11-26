@@ -1,36 +1,36 @@
-#pragma once
+ï»¿#pragma once
 #include<stdio.h>
 #include<time.h>
 #include<stdlib.h>
 #include<windows.h>
 
-/*ËÙ¶È¼°¼ÓËÙ¶ÈµÄµ¥Î»ÎªĞĞÃ¿Ãë»òÃ¿ÃëÆ½·½*/
+/*é€Ÿåº¦åŠåŠ é€Ÿåº¦çš„å•ä½ä¸ºè¡Œæ¯ç§’æˆ–æ¯ç§’å¹³æ–¹*/
 struct settings {
-	int map_height;               //µØÍ¼¸ß¶È
-	int map_width;                //µØÍ¼¿í¶È
-	int map_board_length;         //Ìø°å³¤¶È
-	int player_height;            //Íæ¼Ò¸ß¶È
-	int player_width;             //Íæ¼Ò¿í¶È
-	float player_drop_acc;        //Íæ¼ÒÏÂÂä¼ÓËÙ¶È
-	int dp_tpf;                   //¶àÉÙtickË¢ĞÂ»­Ãæ
-	int dp_tpl;                   //¶àÉÙtickË¢ĞÂÒ»ĞĞ
-	int line;                     //µ±Ç°ÓÎÏ·×îµ×¶ËËùÔÚĞĞµÄ±àºÅ
-	float velocity_UD;            //ÏòÉÏµ¯ÆğµÄ³õËÙ¶È
-	float velocity_LR;            //×óÓÒÒÆ¶¯µÄËÙ¶È
+	int map_height;               //åœ°å›¾é«˜åº¦
+	int map_width;                //åœ°å›¾å®½åº¦
+	int map_board_length;         //è·³æ¿é•¿åº¦
+	int player_height;            //ç©å®¶é«˜åº¦
+	int player_width;             //ç©å®¶å®½åº¦
+	float player_drop_acc;        //ç©å®¶ä¸‹è½åŠ é€Ÿåº¦
+	int dp_tpf;                   //å¤šå°‘tickåˆ·æ–°ç”»é¢
+	int dp_tpl;                   //å¤šå°‘tickåˆ·æ–°ä¸€è¡Œ
+	int line;                     //å½“å‰æ¸¸æˆæœ€åº•ç«¯æ‰€åœ¨è¡Œçš„ç¼–å·
+	float velocity_UD;            //å‘ä¸Šå¼¹èµ·çš„åˆé€Ÿåº¦
+	float velocity_LR;            //å·¦å³ç§»åŠ¨çš„é€Ÿåº¦
 };
 
 struct player {
 	float x;
-	int y;                        //Íæ¼ÒÎ»ÖÃ,ÒÔÍæ¼Ò×îÏÂ¶ËµÄÖĞ¼äÎ»ÖÃÎª»ù×¼
-	unsigned long long pre_time;  //ÉÏÒ»´ÎÅö×²µÄÊ±¼ä
-	int pre_board;                //ÉÏÒ»´ÎÅö×²µÄ°åµÄËùÔÚĞĞ
+	int y;                        //ç©å®¶ä½ç½®,ä»¥ç©å®¶æœ€ä¸‹ç«¯çš„ä¸­é—´ä½ç½®ä¸ºåŸºå‡†
+	unsigned long long pre_time;  //ä¸Šä¸€æ¬¡ç¢°æ’çš„æ—¶é—´
+	int pre_board;                //ä¸Šä¸€æ¬¡ç¢°æ’çš„æ¿çš„æ‰€åœ¨è¡Œ
 };
 
 struct board {
-	int line_id;                  //°åËùÔÚĞĞ
-	int x;                        //×ó¶ËµãÎ»ÖÃ
-	char type;                    //°åµÄÀàĞÍ£¬Ä¬ÈÏÎª0
-	struct board* next;           //ÏÂÒ»¸ö½Úµã
+	int line_id;                  //æ¿æ‰€åœ¨è¡Œ
+	int x;                        //å·¦ç«¯ç‚¹ä½ç½®
+	char type;                    //æ¿çš„ç±»å‹ï¼Œé»˜è®¤ä¸º0
+	struct board* next;           //ä¸‹ä¸€ä¸ªèŠ‚ç‚¹
 };
 
 int get_key_state()
@@ -50,7 +50,7 @@ void gotoxy(int x, int y)
 	SetConsoleCursorPosition(handle, pos);
 }
 
-void print_frame(struct settings* set)//ÓÎÏ·¿ªÊ¼Ê±£¬´òÓ¡±ß¿ò 
+void print_frame(struct settings* set)//æ¸¸æˆå¼€å§‹æ—¶ï¼Œæ‰“å°è¾¹æ¡† 
 {
 	for (int i = 1; i <= set->map_height + 1; i++)
 	{
@@ -63,7 +63,7 @@ void print_frame(struct settings* set)//ÓÎÏ·¿ªÊ¼Ê±£¬´òÓ¡±ß¿ò
 
 }
 
-void render_boards(struct board* head, struct settings* set, int*** Map)//½«Á´±íÉú³ÉÊı×éMap 
+void render_boards(struct board* head, struct settings* set, int*** Map)//å°†é“¾è¡¨ç”Ÿæˆæ•°ç»„Map 
 {
 	struct board* p = head;
 	while (p != NULL)
@@ -79,7 +79,7 @@ void render_boards(struct board* head, struct settings* set, int*** Map)//½«Á´±í
 
 }
 
-void add_board(struct board** head, struct board** tail, int line_id, int x, char type) { //¼Ó°å
+void add_board(struct board** head, struct board** tail, int line_id, int x, char type) { //åŠ æ¿
 	struct board* p = (struct board*)malloc(sizeof(struct board));
 	while (p == NULL) {
 		p = (struct board*)malloc(sizeof(struct board));
@@ -96,7 +96,7 @@ void add_board(struct board** head, struct board** tail, int line_id, int x, cha
 	*tail = p;
 }
 
-void delete_board(struct board** head, struct board** tail, int line_id) {  //É¾³ıÒ»ĞĞµÄ°å
+void delete_board(struct board** head, struct board** tail, int line_id) {  //åˆ é™¤ä¸€è¡Œçš„æ¿
 	struct board* p;
 	while (*head != NULL && (*head)->line_id == line_id) {
 		p = *head;
@@ -108,18 +108,18 @@ void delete_board(struct board** head, struct board** tail, int line_id) {  //É¾
 	}
 }
 
-void gen_board(struct settings* settings, struct board** head, struct board** tail, int line_id) {//Éú³ÉÒ»ĞĞµÄ°å
+void gen_board(struct settings* settings, struct board** head, struct board** tail, int line_id) {//ç”Ÿæˆä¸€è¡Œçš„æ¿
 	int board_width = settings->map_board_length;
 	int map_width = settings->map_width - board_width;
 	for (int i = 1; i <= map_width; i++) {
-		if (rand() % 5 == 1) { //´ó¸ÅÎå·ÖÖ®Ò»¸ÅÂÊ¼ÓÒ»¸ö°å£¬³õÊ¼»¯µÄÊ±ºòÖØÖÃÒ»ÏÂÖÖ×Ó£¬ÒÔºó¿´ÄÜ²»ÄÜÔÚÉèÖÃÀïÃæ¶¨Òå¸ÅÂÊ
+		if (rand() % 5 == 1) { //å¤§æ¦‚äº”åˆ†ä¹‹ä¸€æ¦‚ç‡åŠ ä¸€ä¸ªæ¿ï¼Œåˆå§‹åŒ–çš„æ—¶å€™é‡ç½®ä¸€ä¸‹ç§å­ï¼Œä»¥åçœ‹èƒ½ä¸èƒ½åœ¨è®¾ç½®é‡Œé¢å®šä¹‰æ¦‚ç‡
 			add_board(head, tail, line_id, i, 0);
 			i += board_width;
 		}
 	}
 }
 
-void multi_gen_board(struct settings* set, struct board** head, struct board** tail, int start_line_id, int end_line_id) {//×óÓÒÎª±ÕÇø¼ä
+void multi_gen_board(struct settings* set, struct board** head, struct board** tail, int start_line_id, int end_line_id) {//å·¦å³ä¸ºé—­åŒºé—´
 	while (start_line_id <= end_line_id) {
 		gen_board(set, head, tail, start_line_id);
 		start_line_id += 3;
