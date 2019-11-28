@@ -73,7 +73,7 @@ void start_game() {
 	}
 }
 void init() {  //游戏数据的初始化
-	FILE* open = fopen("D:\\gamedata\\gameinit.dat", "r");
+	FILE* open = fopen("gameinit.dat", "r");
 	if (open == NULL) {
 		printf("缺少配置文件");
 		exit(0);
