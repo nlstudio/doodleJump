@@ -12,11 +12,12 @@ struct settings {
 	int player_height;            //玩家高度
 	int player_width;             //玩家宽度
 	float player_drop_acc;        //玩家下落加速度
-	int dp_tpf;                   //多少tick刷新画面
+	unsigned long long dp_tpf;    //多少tick刷新画面
 	int dp_tpl;                   //多少tick刷新一行
 	int line;                     //当前游戏最底端所在行的编号
 	float velocity_UD;            //向上弹起的初速度
 	float velocity_LR;            //左右移动的速度
+	int remain_bounce_line;       //玩家能向上跳多少行
 };
 
 struct player {
@@ -24,6 +25,7 @@ struct player {
 	int y;                        //玩家位置,以玩家最下端的中间位置为基准
 	unsigned long long pre_time;  //上一次碰撞的时间
 	int pre_board;                //上一次碰撞的板的所在行
+	int remain_bounce_line;       //玩家能向上跳多少行
 };
 
 struct board {
@@ -112,7 +114,7 @@ void gen_board(struct settings* settings, struct board** head, struct board** ta
 	int board_width = settings->map_board_length;
 	int map_width = settings->map_width - board_width;
 	for (int i = 1; i <= map_width; i++) {
-		if (rand() % 5 == 1) { //大概五分之一概率加一个板，初始化的时候重置一下种子，以后看能不能在设置里面定义概率
+		if (rand() % 7 == 1) { //大概五分之一概率加一个板，初始化的时候重置一下种子，以后看能不能在设置里面定义概率
 			add_board(head, tail, line_id, i, 0);
 			i += board_width;
 		}
@@ -134,6 +136,7 @@ int land_on_board(struct settings* set, struct board* board_HEAD, struct player*
 		if (Player->x >= board_HEAD->x && Player->x <= (board_HEAD->x + set->map_board_length - 1)) {
 			return 1;
 		}
+		board_HEAD = board_HEAD->next;
 	}
 	return 0;
 }
