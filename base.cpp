@@ -10,12 +10,12 @@ void start_game() {
 	add_board(&head, &tail, 1, (set.map_width >> 1) - 1, 0);
 	multi_gen_board(&set, &head, &tail, 4, 100);
 	int current_board = 100;  //记录当前板生成到了哪一行
-	player1.pre_time = GetTickCount64();
+	player1.pre_time = GetTickCount();
 	player1.pre_board = 1;
 	player1.remain_bounce_line = set.remain_bounce_line;
 	//int i = 0;
 	while (1) {
-		unsigned long long current_time = GetTickCount64();//此次操作开始的基准时间
+		unsigned long long current_time = GetTickCount();//此次操作开始的基准时间
 		//读取键盘输入
 		int key_state = get_key_state();
 		//更新x方向位置
@@ -65,10 +65,10 @@ void start_game() {
 		render_boards(head, &set, &Map);
 		show(&player1, &set);
 		//线程休息
-		if (GetTickCount64() - current_time > set.dp_tpf) {
+		if (GetTickCount() - current_time > set.dp_tpf) {
 			continue;
 		}
-		DWORD end_time = set.dp_tpf - (GetTickCount64() - current_time);
+		DWORD end_time = set.dp_tpf - (GetTickCount() - current_time);
 		Sleep(end_time);
 	}
 }
@@ -78,17 +78,17 @@ void init() {  //游戏数据的初始化
 		printf("缺少配置文件");
 		exit(0);
 	}
-	fscanf_s(open, "%d", &set.map_height);
-	fscanf_s(open, "%d", &set.map_width);
-	fscanf_s(open, "%d", &set.map_board_length);
-	fscanf_s(open, "%d", &set.player_height);
-	fscanf_s(open, "%d", &set.player_width);
-	fscanf_s(open, "%f", &set.player_drop_acc);
-	fscanf_s(open, "%llu", &set.dp_tpf);
-	fscanf_s(open, "%d", &set.dp_tpl);
-	fscanf_s(open, "%f", &set.velocity_UD);
-	fscanf_s(open, "%f", &set.velocity_LR);
-	fscanf_s(open, "%d", &set.remain_bounce_line);
+	fscanf(open, "%d", &set.map_height);
+	fscanf(open, "%d", &set.map_width);
+	fscanf(open, "%d", &set.map_board_length);
+	fscanf(open, "%d", &set.player_height);
+	fscanf(open, "%d", &set.player_width);
+	fscanf(open, "%f", &set.player_drop_acc);
+	fscanf(open, "%llu", &set.dp_tpf);
+	fscanf(open, "%d", &set.dp_tpl);
+	fscanf(open, "%f", &set.velocity_UD);
+	fscanf(open, "%f", &set.velocity_LR);
+	fscanf(open, "%d", &set.remain_bounce_line);
 	fclose(open);
 	player1.x = set.map_width >> 1;
 	player1.y = 1;
