@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include"standard_head.h"
 #include<cstdio>
 settings set;

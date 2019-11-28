@@ -1,20 +1,20 @@
-ï»¿#pragma once
+#pragma once
 
 #include"global_variable.cpp"
 
 //int Map[set.map_height+1][set.map_width+1]={0,};
 
-int py;//åœ¨Mapä¸­playerä½ç½®ä¸º(player.x , py) 
+int py;//ÔÚMapÖĞplayerÎ»ÖÃÎª(player.x , py) 
 void render_player(struct player* pla,struct settings* set)
 {
 	py = set->map_height - pla->y + set->line;
 	while(py< set->map_height/2){
 		
 		set->line++;py=set->map_height - pla->y + set->line;
-	}//å¦‚æœç©å®¶ä½ç½®è¶…è¿‡å±å¹•äºŒåˆ†ä¹‹ä¸€ï¼Œå±å¹•ä¸Šç§» 
+	}//Èç¹ûÍæ¼ÒÎ»ÖÃ³¬¹ıÆÁÄ»¶ş·ÖÖ®Ò»£¬ÆÁÄ»ÉÏÒÆ 
 }
 
-void show(struct player* pla,struct settings* set)//æ‰“å°æ¿å’Œç©å®¶ï¼Œæ¯ç§’åˆ·æ–° 
+void show(struct player* pla,struct settings* set)//´òÓ¡°åºÍÍæ¼Ò£¬Ã¿ÃëË¢ĞÂ 
 {	for(int i=1;i<=set->map_height;i++)
 	{	gotoxy(1,i);
 		for(int j=1;j<=set->map_width;j++)

@@ -1,4 +1,4 @@
-ï»¿#pragma once
+#pragma once
 #define _CRT_SECURE_NO_WARNINGS
 //#define DEBUG
 #include"front.cpp"
@@ -9,16 +9,16 @@ FILE* point;
 void start_game() {
 	add_board(&head, &tail, 1, (set.map_width >> 1) - 1, 0);
 	multi_gen_board(&set, &head, &tail, 4, 100);
-	int current_board = 100;  //è®°å½•å½“å‰æ¿ç”Ÿæˆåˆ°äº†å“ªä¸€è¡Œ
+	int current_board = 100;  //¼ÇÂ¼µ±Ç°°åÉú³Éµ½ÁËÄÄÒ»ĞĞ
 	player1.pre_time = GetTickCount64();
 	player1.pre_board = 1;
 	player1.remain_bounce_line = set.remain_bounce_line;
 	//int i = 0;
 	while (1) {
-		unsigned long long current_time = GetTickCount64();//æ­¤æ¬¡æ“ä½œå¼€å§‹çš„åŸºå‡†æ—¶é—´
-		//è¯»å–é”®ç›˜è¾“å…¥
+		unsigned long long current_time = GetTickCount64();//´Ë´Î²Ù×÷¿ªÊ¼µÄ»ù×¼Ê±¼ä
+		//¶ÁÈ¡¼üÅÌÊäÈë
 		int key_state = get_key_state();
-		//æ›´æ–°xæ–¹å‘ä½ç½®
+		//¸üĞÂx·½ÏòÎ»ÖÃ
 		player1.x += (key_state * set.velocity_LR);
 		if (player1.x <= 1) {
 			player1.x = 1;
@@ -26,7 +26,7 @@ void start_game() {
 		if (player1.x >= set.map_width) {
 			player1.x = set.map_width;
 		}
-		//æ›´æ–°yæ–¹å‘ä½ç½®
+		//¸üĞÂy·½ÏòÎ»ÖÃ
 		/*float time = (float)(current_time - player1.pre_time) / 1000;
 		player1.y = F(time);*/
 		if (player1.remain_bounce_line > 0) {
@@ -36,22 +36,22 @@ void start_game() {
 		else {
 			player1.y--;
 		}
-		//åˆ¤æ–­æ˜¯å¦åº”ç”Ÿæˆæ–°æ¿
+		//ÅĞ¶ÏÊÇ·ñÓ¦Éú³ÉĞÂ°å
 		if (player1.y >= current_board - 20) {
 			multi_gen_board(&set, &head, &tail, current_board + 1, current_board + 100);
 			current_board += 100;
 		}
-		//åˆ¤æ–­æ˜¯å¦å å…¥è™šç©º
+		//ÅĞ¶ÏÊÇ·ñ×¹ÈëĞé¿Õ
 		if (drop_into_void(&set, &player1)) {
 			exit(0);
 		}
-		//åˆ¤æ–­æ˜¯å¦ç¢°æ’
+		//ÅĞ¶ÏÊÇ·ñÅö×²
 		if (land_on_board(&set, head, &player1)) {
 			player1.pre_board = player1.y;
 			player1.pre_time = current_time;
 			player1.remain_bounce_line = set.remain_bounce_line;
 		}
-		//æäº¤æ¸²æŸ“
+		//Ìá½»äÖÈ¾
 #ifdef DEBUG
 		for (int i = 0; i <= set.map_height; i++) {
 			for (int j = 0; j <= set.map_width; j++) {
@@ -64,7 +64,7 @@ void start_game() {
 		render_player(&player1, &set);
 		render_boards(head, &set, &Map);
 		show(&player1, &set);
-		//çº¿ç¨‹ä¼‘æ¯
+		//Ïß³ÌĞİÏ¢
 		if (GetTickCount64() - current_time > set.dp_tpf) {
 			continue;
 		}
@@ -72,10 +72,10 @@ void start_game() {
 		Sleep(end_time);
 	}
 }
-void init() {  //æ¸¸æˆæ•°æ®çš„åˆå§‹åŒ–
+void init() {  //ÓÎÏ·Êı¾İµÄ³õÊ¼»¯
 	FILE* open = fopen("D:\\gamedata\\gameinit.dat", "r");
 	if (open == NULL) {
-		printf("ç¼ºå°‘é…ç½®æ–‡ä»¶");
+		printf("È±ÉÙÅäÖÃÎÄ¼ş");
 		exit(0);
 	}
 	fscanf_s(open, "%d", &set.map_height);
