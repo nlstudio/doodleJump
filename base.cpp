@@ -1,8 +1,8 @@
 #pragma once
 #define _CRT_SECURE_NO_WARNINGS
 //#define DEBUG
-#include"front.cpp"
-#include"standard_head.h"
+#include "front.cpp"
+#include "standard_head.h"
 //#define BACK_DEBUG
 FILE* point;
 void start_game() {

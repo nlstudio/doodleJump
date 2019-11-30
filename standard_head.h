@@ -1,10 +1,9 @@
 #pragma once
-#include<stdio.h>
-#include<time.h>
-#include<stdlib.h>
-#include<windows.h>
+#include <stdio.h>
+#include <time.h>
+#include <stdlib.h>
+#include <windows.h>
 
-/*速度及加速度的单位为行每秒或每秒平方*/
 struct settings {
 	int map_height;               //地图高度
 	int map_width;                //地图宽度
@@ -15,6 +14,7 @@ struct settings {
 	unsigned long long dp_tpf;    //多少tick刷新画面
 	int dp_tpl;                   //多少tick刷新一行
 	int line;                     //当前游戏最底端所在行的编号
+	/* 速度及加速度的单位为行每秒或每秒平方 */
 	float velocity_UD;            //向上弹起的初速度
 	float velocity_LR;            //左右移动的速度
 	int remain_bounce_line;       //玩家能向上跳多少行
@@ -38,10 +38,10 @@ struct board {
 int get_key_state()
 {
 	Sleep(8);
-	if (GetAsyncKeyState(VK_LEFT) & 0x25)return -1;
-	if (GetAsyncKeyState('A') & 0x41)return -1;
-	if (GetAsyncKeyState(VK_RIGHT) & 0x27)return 1;
-	if (GetAsyncKeyState('D') & 0x44)return 1;
+	if (GetAsyncKeyState(VK_LEFT) & 0x25) return -1;
+	if (GetAsyncKeyState('A') & 0x41) return -1;
+	if (GetAsyncKeyState(VK_RIGHT) & 0x27) return 1;
+	if (GetAsyncKeyState('D') & 0x44) return 1;
 	return 0;
 }
 
@@ -52,7 +52,8 @@ void gotoxy(int x, int y)
 	SetConsoleCursorPosition(handle, pos);
 }
 
-void print_frame(struct settings* set)//游戏开始时，打印边框 
+void print_frame(struct settings* set)
+// 游戏开始时，打印边框 
 {
 	for (int i = 1; i <= set->map_height + 1; i++)
 	{
@@ -65,7 +66,8 @@ void print_frame(struct settings* set)//游戏开始时，打印边框
 
 }
 
-void render_boards(struct board* head, struct settings* set, int*** Map)//将链表生成数组Map 
+void render_boards(struct board* head, struct settings* set, int*** Map)
+// 将链表生成数组Map 
 {
 	struct board* p = head;
 	for(int i=1;i<=set->map_height;i++)
@@ -86,7 +88,9 @@ void render_boards(struct board* head, struct settings* set, int*** Map)//将链表
 
 }
 
-void add_board(struct board** head, struct board** tail, int line_id, int x, char type) { //加板
+void add_board(struct board** head, struct board** tail, int line_id, int x, char type) 
+// 加板
+{
 	struct board* p = (struct board*)malloc(sizeof(struct board));
 	while (p == NULL) {
 		p = (struct board*)malloc(sizeof(struct board));
@@ -103,7 +107,9 @@ void add_board(struct board** head, struct board** tail, int line_id, int x, cha
 	*tail = p;
 }
 
-void delete_board(struct board** head, struct board** tail, int line_id) {  //删除一行的板
+void delete_board(struct board** head, struct board** tail, int line_id) 
+// 删除一行的板
+{
 	struct board* p;
 	while (*head != NULL && (*head)->line_id == line_id) {
 		p = *head;
@@ -115,18 +121,23 @@ void delete_board(struct board** head, struct board** tail, int line_id) {  //删
 	}
 }
 
-void gen_board(struct settings* settings, struct board** head, struct board** tail, int line_id) {//生成一行的板
+void gen_board(struct settings* settings, struct board** head, struct board** tail, int line_id) 
+// 生成一行的板
+{
 	int board_width = settings->map_board_length;
 	int map_width = settings->map_width - board_width;
 	for (int i = 1; i <= map_width; i++) {
-		if (rand() % 3 == 1) { //大概五分之一概率加一个板，初始化的时候重置一下种子，以后看能不能在设置里面定义概率
+		// 大概五分之一概率加一个板，初始化的时候重置一下种子，以后看能不能在设置里面定义概率
+		if (rand() % 3 == 1) {
 			add_board(head, tail, line_id, i, 0);
 			i += board_width;
 		}
 	}
 }
 
-void multi_gen_board(struct settings* set, struct board** head, struct board** tail, int start_line_id, int end_line_id) {//左右为闭区间
+void multi_gen_board(struct settings* set, struct board** head, struct board** tail, int start_line_id, int end_line_id) 
+// 左右为闭区间
+{
 	while (start_line_id <= end_line_id) {
 		gen_board(set, head, tail, start_line_id);
 		start_line_id += 3;
