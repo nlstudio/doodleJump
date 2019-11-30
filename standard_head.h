@@ -77,20 +77,18 @@ void render_boards(struct board* head, struct settings* set, char*** Map)
 	struct board* p = head;
 	for(int i=1;i<=set->map_height;i++)
 	for(int j=1;j<=set->map_width;j++)
-	{(*Map)[i][j] = 0;
+	{(*Map)[i][j] = ' ';
 	 } 
 	while (p != NULL)
 	{	if (set->map_height - p->line_id + set->line > 0 && set->line <= p->line_id)
 		{	for (int j = p->x; j < p->x + set->map_board_length; j++)
 			{	
 				//(*Map)[set->map_height - p->line_id + set->line][j] = (int)(p->type);
-				(*Map)[set->map_height - p->line_id + set->line][j] = 1;
+				(*Map)[set->map_height - p->line_id + set->line][j] = '=';
 			}
-		
 		} 
 		p = p->next;
 	}
-
 }
 
 void add_board(struct board** head, struct board** tail, int line_id, int x, char type) 
