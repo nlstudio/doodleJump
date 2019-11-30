@@ -3,7 +3,6 @@
 //#define DEBUG
 #include"front.cpp"
 #include"standard_head.h"
-#define F(time) player1.pre_board+set.velocity_UD*time-0.5*set.player_drop_acc*time*time
 //#define BACK_DEBUG
 FILE* point;
 void start_game() {
@@ -27,8 +26,6 @@ void start_game() {
 			player1.x = set.map_width;
 		}
 		//更新y方向位置
-		/*float time = (float)(current_time - player1.pre_time) / 1000;
-		player1.y = F(time);*/
 		if (player1.remain_bounce_line > 0) {
 			player1.y++;
 			player1.remain_bounce_line--;
@@ -64,6 +61,10 @@ void start_game() {
 		render_player(&player1, &set);
 		render_boards(head, &set, &Map);
 		show(&player1, &set);
+		//判断是否删除之前的板
+		while (head != NULL && head->line_id < set.line) {
+			delete_board(&head, &tail, head->line_id);
+		}
 		//线程休息
 		if (GetTickCount() - current_time > set.dp_tpf) {
 			continue;
