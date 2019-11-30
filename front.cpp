@@ -25,10 +25,10 @@ void show(struct player* pla,struct settings* set)//打印板和玩家，每秒刷新
 	for(int j=1;j<=set->map_width;j++)
 	{	gotoxy(j,i);
 		switch(Map[i][j])
-		{	case 1:for(int k=1;k<=set->map_board_length;k++){printf("=");}	break;
-			case 2:for(int k=1;k<=set->map_board_length;k++){printf("=");}	break;
-			case 3:for(int k=1;k<=set->map_board_length;k++){printf("=");}	break;
-			case 4:for(int k=1;k<=set->map_board_length;k++){printf("=");}	break;
+		{	case 1:printf("=");	break;
+			case 2:printf("=");	break;
+			case 3:printf("=");	break;
+			case 4:printf("=");	break;
 		}
 		
 	}

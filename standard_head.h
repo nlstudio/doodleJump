@@ -68,14 +68,19 @@ void print_frame(struct settings* set)//游戏开始时，打印边框
 void render_boards(struct board* head, struct settings* set, int*** Map)//将链表生成数组Map 
 {
 	struct board* p = head;
+	for(int i=1;i<=set->map_height;i++)
+	for(int j=1;j<=set->map_width;j++)
+	{(*Map)[i][j] = 0;
+	 } 
 	while (p != NULL)
-	{
-		for (int j = p->x; j < p->x + set->map_board_length; j++)
-		{
-			if (set->map_height - p->line_id + set->line > 0 && set->line <= p->line_id)
+	{	if (set->map_height - p->line_id + set->line > 0 && set->line <= p->line_id)
+		{	for (int j = p->x; j < p->x + set->map_board_length; j++)
+			{	
 				//(*Map)[set->map_height - p->line_id + set->line][j] = (int)(p->type);
 				(*Map)[set->map_height - p->line_id + set->line][j] = 1;
-		}
+			}
+		
+		} 
 		p = p->next;
 	}
 
