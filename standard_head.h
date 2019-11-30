@@ -139,6 +139,7 @@ int land_on_board(struct settings* set, struct board* board_HEAD, struct player*
 	}
 	while (board_HEAD != NULL && (board_HEAD->line_id == Player->y)) {
 		if (Player->x >= board_HEAD->x && Player->x <= (board_HEAD->x + set->map_board_length - 1)) {
+			Player->y += 1;
 			return 1;
 		}
 		board_HEAD = board_HEAD->next;
