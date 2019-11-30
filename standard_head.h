@@ -119,7 +119,7 @@ void gen_board(struct settings* settings, struct board** head, struct board** ta
 	int board_width = settings->map_board_length;
 	int map_width = settings->map_width - board_width;
 	for (int i = 1; i <= map_width; i++) {
-		if (rand() % 7 == 1) { //大概五分之一概率加一个板，初始化的时候重置一下种子，以后看能不能在设置里面定义概率
+		if (rand() % 3 == 1) { //大概五分之一概率加一个板，初始化的时候重置一下种子，以后看能不能在设置里面定义概率
 			add_board(head, tail, line_id, i, 0);
 			i += board_width;
 		}

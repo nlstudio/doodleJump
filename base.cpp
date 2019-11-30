@@ -58,9 +58,13 @@ void start_game() {
 		}
 		system("pause");
 #endif // DEBUG
-		render_player(&player1, &set);
+		int temp=render_player(&player1, &set);
 		render_boards(head, &set, &Map);
-		show(&player1, &set);
+		if(	temp||times==0)		
+		{
+			show_board(&player1, &set);
+		}
+		show_player(&player1, &set);
 		//判断是否删除之前的板
 		while (head != NULL && head->line_id < set.line) {
 			delete_board(&head, &tail, head->line_id);
@@ -71,6 +75,7 @@ void start_game() {
 		}
 		DWORD end_time = set.dp_tpf - (GetTickCount() - current_time);
 		Sleep(end_time);
+		Sleep(20);
 	}
 }
 void init() {  //游戏数据的初始化
