@@ -18,51 +18,19 @@ int render_player(struct player* pla,struct settings* set)
 	return flag;
 }
 
-void show_board(struct player* pla,struct settings* set)
-// 将板打印到屏幕上 
-{	
-	for (int i=1; i <= set->map_height; i++)
-	{	
-		gotoxy(1,i);
-		for (int j=1; j<=set->map_width; j++)
-		{
-			printf(" ");
-		}
-	}
-	for (int i = 1; i <= set->map_height; i++)
-	for (int j = 1; j <= set->map_width; j++)
-	{
-		gotoxy(j,i);
-		switch (Map[i][j])
-		{
-			case 1: printf("=");	break;
-			case 2: printf("=");	break;
-			case 3: printf("=");	break;
-			case 4: printf("=");	break;
-		}
-	}
-}
-void show_player(struct player* pla,struct settings* set)
-// 打印玩家
+void show(struct player* pla,struct settings* set)
+//打印板
 {
-	static int last_x, last_y;
-	if (times)
-	{	for(int i = last_x-set->player_width/2; i<=last_x+set->player_width/2; i++)
-		for(int j = last_y-set->player_height+1; j<=last_y; j++)
-		{
-			gotoxy(i,j);
-			if (Map[j][i]) printf("=");
-				else printf(" ");
-		}
+	for(int i=pla->x-set->player_width/2;i<=pla->x+set->player_width/2;i++)
+	for(int j=py-set->player_height+1;j<=py;j++)
+	{   Map[j][i]='*';
 	}
-	times++;
 	
-	for (int i = pla->x-set->player_width/2; i <= pla->x+set->player_width/2; i++)
-	for (int j = py-set->player_height+1; j<=py; j++)
-	{
-		gotoxy(i, j);
-		printf("*");
-	}
-	last_x = pla->x;
-	last_y = py;
+	for (int i = 1; i <=set->map_height; i++)
+    {
+        coord.Y = i;coord.X = 1;
+        WriteConsoleOutputCharacterA(hOutBuf, Map[i], set->map_width, coord, &bytes);
+    }
+    //设置新的缓冲区为活动显示缓冲
+    SetConsoleActiveScreenBuffer(hOutBuf);
 }

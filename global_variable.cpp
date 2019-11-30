@@ -5,4 +5,4 @@ settings set;
 struct player player1;
 struct board* head = NULL;
 struct board* tail = NULL;
-int** Map;
+char** Map;

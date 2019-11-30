@@ -58,13 +58,9 @@ void start_game() {
 		}
 		system("pause");
 #endif // DEBUG
-		int temp=render_player(&player1, &set);
+		render_player(&player1, &set);
 		render_boards(head, &set, &Map);
-		if(	temp||times==0)		
-		{
-			show_board(&player1, &set);
-		}
-		show_player(&player1, &set);
+		show(&player1, &set);
 		//判断是否删除之前的板
 		while (head != NULL && head->line_id < set.line) {
 			delete_board(&head, &tail, head->line_id);
@@ -98,14 +94,30 @@ void init() {  //游戏数据的初始化
 	fclose(open);
 	player1.x = set.map_width >> 1;
 	player1.y = 1;
-	Map = (int**)malloc(sizeof(int*) * (set.map_height + 1));
+	Map = (char**)malloc(sizeof(char*) * (set.map_height + 1));
 	for (int i = 0; i <= set.map_height; i++) {
-		Map[i] = (int*)malloc(sizeof(int) * set.map_width + 1);
+		Map[i] = (char*)malloc(sizeof(char) * set.map_width + 1);
 		for (int j = 0; j <= set.map_width; j++) {
-			Map[i][j] = 0;
+			Map[i][j] = ' ';
 		}
 	}
 	srand(time(0));
+	
+	 //创建新的控制台缓冲区
+    hOutBuf = CreateConsoleScreenBuffer(
+        GENERIC_WRITE,//定义进程可以往缓冲区写数据
+        FILE_SHARE_WRITE,//定义缓冲区可共享写权限
+        NULL,
+        CONSOLE_TEXTMODE_BUFFER,
+        NULL
+    );
+    
+    //隐藏缓冲区的光标
+    CONSOLE_CURSOR_INFO cci;
+    cci.bVisible = 0;
+    cci.dwSize = 1;
+    SetConsoleCursorInfo(hOutBuf, &cci);
+
 	print_frame(&set);
 	start_game();
 }
