@@ -31,7 +31,7 @@ struct player {
 struct board {
 	int line_id;                  //板所在行
 	int x;                        //左端点位置
-	char type;                    //板的类型，默认为0
+	char type;                    //板的类型，默认为1
 	struct board* next;           //下一个节点
 };
 
@@ -41,11 +41,10 @@ DWORD bytes = 0;
 
 int get_key_state()
 {
-	Sleep(8);
-	if (GetAsyncKeyState(VK_LEFT) & 0x25) return -1;
-	if (GetAsyncKeyState('A') & 0x41) return -1;
-	if (GetAsyncKeyState(VK_RIGHT) & 0x27) return 1;
-	if (GetAsyncKeyState('D') & 0x44) return 1;
+	if (GetAsyncKeyState(VK_LEFT)) return -1;
+	if (GetAsyncKeyState('A')) return -1;
+	if (GetAsyncKeyState(VK_RIGHT)) return 1;
+	if (GetAsyncKeyState('D')) return 1;
 	return 0;
 }
 
@@ -131,8 +130,8 @@ void gen_board(struct settings* settings, struct board** head, struct board** ta
 	int map_width = settings->map_width - board_width;
 	for (int i = 1; i <= map_width; i++) {
 		// 大概五分之一概率加一个板，初始化的时候重置一下种子，以后看能不能在设置里面定义概率
-		if (rand() % 3 == 1) {
-			add_board(head, tail, line_id, i, 0);
+		if (rand() % (20 + settings->line / 8) == 1) { 
+			add_board(head, tail, line_id, i, 1);
 			i += board_width;
 		}
 	}
@@ -143,7 +142,7 @@ void multi_gen_board(struct settings* set, struct board** head, struct board** t
 {
 	while (start_line_id <= end_line_id) {
 		gen_board(set, head, tail, start_line_id);
-		start_line_id += 3;
+		start_line_id++;
 	}
 }
 
