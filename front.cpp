@@ -1,5 +1,7 @@
 #pragma once
 #include "global_variable.cpp"
+#include "front_end.h"
+#include <Windows.h>
 
 //int Map[set.map_height+1][set.map_width+1]={0,};
 int times = 0;

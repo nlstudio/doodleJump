@@ -2,17 +2,19 @@
 #define _CRT_SECURE_NO_WARNINGS
 //#define DEBUG
 #include "front.cpp"
-#include "standard_head.h"
+#include "struct_def.h"
+#include "back_end.h"
+#include <time.h>
 //#define BACK_DEBUG
 FILE* point;
 void start_game() {
-	add_board(&head, &tail, 1, (set.map_width >> 1) - 1, 0);
+	add_board(&head, &tail, 1, (set.map_width >> 1) - 1, 1);
 	multi_gen_board(&set, &head, &tail, 4, 100);
 	int current_board = 100;  //记录当前板生成到了哪一行
 	player1.pre_time = GetTickCount();
 	player1.pre_board = 1;
+	player1.pre_board_type = 1;
 	player1.remain_bounce_line = set.remain_bounce_line;
-	//int i = 0;
 	while (1) {
 		unsigned long long current_time = GetTickCount();//此次操作开始的基准时间
 		//读取键盘输入
@@ -27,8 +29,18 @@ void start_game() {
 		}
 		//更新y方向位置
 		if (player1.remain_bounce_line > 0) {
-			player1.y++;
-			player1.remain_bounce_line--;
+			switch (player1.pre_board_type) {
+			case 1:
+				player1.y++;
+				player1.remain_bounce_line--;
+				break;
+			case 2:
+				player1.y += 2;
+				player1.remain_bounce_line -= 2;
+				break;
+			default:
+				break;
+			}
 		}
 		else {
 			player1.y--;
@@ -43,10 +55,28 @@ void start_game() {
 			exit(0);
 		}
 		//判断是否碰撞
-		if (land_on_board(&set, head, &player1)) {
+		switch (land_on_board(&set, head, &player1))
+		{
+		case 1:
 			player1.pre_board = player1.y;
+			player1.pre_board_type = 1;
 			player1.pre_time = current_time;
 			player1.remain_bounce_line = set.remain_bounce_line;
+			break;
+		case 2:
+			player1.pre_board = player1.y;
+			player1.pre_board_type = 2;
+			player1.pre_time = current_time;
+			player1.remain_bounce_line = set.remain_bounce_line + 10;
+			break;
+		case 3:
+			player1.pre_board = player1.y;
+			player1.pre_board_type = 1;
+			player1.pre_time = current_time;
+			player1.remain_bounce_line = set.remain_bounce_line;
+			break;
+		default:
+			break;
 		}
 		//提交渲染
 #ifdef DEBUG
@@ -71,7 +101,6 @@ void start_game() {
 		}
 		DWORD end_time = set.dp_tpf - (GetTickCount() - current_time);
 		Sleep(end_time);
-		Sleep(20);
 	}
 }
 void init() {  //游戏数据的初始化

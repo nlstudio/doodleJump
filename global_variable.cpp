@@ -1,6 +1,6 @@
 #pragma once
-#include "standard_head.h"
-#include <cstdio>
+#include "struct_def.h"
+#include <stdio.h>
 settings set;
 struct player player1;
 struct board* head = NULL;
