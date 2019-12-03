@@ -67,7 +67,7 @@ void gameover(struct settings* set,struct player* pla)
 	
 	coord.X = set->map_width/3;coord.Y = set->map_height/2+1;
 	char s[15]={"your score:"};
-    int score=pla->y+14;
+    int score=pla->y+1;
 	s[12]=(score/100==0?32:48+score/100);
 	s[13]=(char)(48+(score%100)/10);
 	s[14]=(char)(48+score%10); 

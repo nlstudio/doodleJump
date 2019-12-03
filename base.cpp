@@ -5,6 +5,7 @@
 #include "struct_def.h"
 #include "back_end.h"
 #include <time.h>
+#include <conio.h>
 //#define BACK_DEBUG
 
 void main_iterface();//开始的界面 
@@ -174,11 +175,12 @@ int main() {
 	while(1)
 	{	SetConsoleActiveScreenBuffer(hOutput);
 		fflush(stdin);
-		char s=getchar();
+		char s=getch();
 		switch(s)
 		{	case '3':	exit(0);break;//退出游戏 
 			case '2':	break;//我还没想好 
-			case '1':	start_game();	break; //开始游戏 
+			case '1':	start_game();	break; //开始游戏
+			default:	continue; //防止你按错键 导致无法进入游戏 
 		}
 		fflush(stdin);
 		getchar();
