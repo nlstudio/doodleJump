@@ -33,7 +33,15 @@ void show(struct player* pla,struct settings* set)
         coord.Y = i;coord.X = 1;
         WriteConsoleOutputCharacterA(hOutBuf, Map[i], set->map_width, coord, &bytes);
     }
-    //设置新的缓冲区为活动显示缓冲
+    coord.Y = set->map_height/2;coord.X = set->map_width+5;
+    char s[15]={"your score:"};
+    static int score;
+	score=(pla->y > score ? pla->y:score);
+	s[12]=(score/100==0?32:48+score/100);
+	s[13]=(char)(48+(score%100)/10);
+	s[14]=(char)(48+score%10); 
+	WriteConsoleOutputCharacterA(hOutBuf, s, 15, coord, &bytes);
+	//设置新的缓冲区为活动显示缓冲
     SetConsoleActiveScreenBuffer(hOutBuf);
 }
 
