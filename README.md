@@ -1,5 +1,7 @@
 # Doodle  Jump
 
+用 C 语言在命令行下复刻经典手机游戏涂鸦跳跃。
+
 ## 介绍	Introduction
 
 > 把红旗插上无穷的高峰！
