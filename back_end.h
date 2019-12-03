@@ -97,3 +97,64 @@ int drop_into_void(struct settings* set, struct player* Player) {
 	}
 	return 0;
 }
+
+void read_data(struct settings* set) {
+	FILE* open = fopen("gameinit.dat", "r");
+	char str[100];
+	set->map_height = 25;
+	set->map_width = 60;
+	set->map_board_length = 5;
+	set->player_height = 2;
+	set->player_width = 1;
+	set->velocity_LR = 1;
+	set->dp_tpf = 100;
+	set->remain_bounce_line = 7;
+	if (open != NULL) {
+		while (!feof(open)) {
+			fscanf(open, "%s", str);
+			if (!strcmp(str, "[map_height]")) {
+				fscanf(open, "%d", &set->map_height);
+				continue;
+			}
+			if (!strcmp(str, "[map_width]")) {
+				fscanf(open, "%d", &set->map_width);
+				continue;
+			}
+			if (!strcmp(str, "[map_board_length]")) {
+				fscanf(open, "%d", &set->map_board_length);
+				continue;
+			}
+			if (!strcmp(str, "[player_height]")) {
+				fscanf(open, "%d", &set->player_height);
+				continue;
+			}
+			if (!strcmp(str, "[player_width]")) {
+				fscanf(open, "%d", &set->player_width);
+				continue;
+			}
+			if (!strcmp(str, "[velocity_LR]")) {
+				fscanf(open, "%f", &set->velocity_LR);
+				continue;
+			}
+			if (!strcmp(str, "[dp_tpf]")) {
+				fscanf(open, "%llu", &set->dp_tpf);
+				continue;
+			}
+			if (!strcmp(str, "[remain_bounce_line]")) {
+				fscanf(open, "%d", &set->remain_bounce_line);
+				continue;
+			}
+		}
+		fclose(open);
+	}
+	open = fopen("gameinit.dat", "w");
+	fprintf(open, "%s\n%d\n", "[map_height]", set->map_height);
+	fprintf(open, "%s\n%d\n", "[map_width]", set->map_width);
+	fprintf(open, "%s\n%d\n", "[map_board_length]", set->map_board_length);
+	fprintf(open, "%s\n%d\n", "[player_height]", set->player_height);
+	fprintf(open, "%s\n%d\n", "[player_width]", set->player_width);
+	fprintf(open, "%s\n%f\n", "[velocity_LR]", set->velocity_LR);
+	fprintf(open, "%s\n%llu\n", "[dp_tpf]", set->dp_tpf);
+	fprintf(open, "%s\n%d", "[remain_bounce_line]", set->remain_bounce_line);
+	fclose(open);
+}

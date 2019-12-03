@@ -5,12 +5,9 @@ struct settings {
 	int map_board_length;         //跳板长度
 	int player_height;            //玩家高度
 	int player_width;             //玩家宽度
-	float player_drop_acc;        //玩家下落加速度
 	unsigned long long dp_tpf;    //多少tick刷新画面
-	int dp_tpl;                   //多少tick刷新一行
 	int line;                     //当前游戏最底端所在行的编号
 	/* 速度及加速度的单位为行每秒或每秒平方 */
-	float velocity_UD;            //向上弹起的初速度
 	float velocity_LR;            //左右移动的速度
 	int remain_bounce_line;       //玩家能向上跳多少行
 };

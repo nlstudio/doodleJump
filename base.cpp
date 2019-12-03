@@ -6,7 +6,6 @@
 #include "back_end.h"
 #include <time.h>
 //#define BACK_DEBUG
-FILE* point;
 void start_game() {
 	add_board(&head, &tail, 1, (set.map_width >> 1) - 1, 1);
 	multi_gen_board(&set, &head, &tail, 4, 100);
@@ -104,23 +103,7 @@ void start_game() {
 	}
 }
 void init() {  //游戏数据的初始化
-	FILE* open = fopen("gameinit.dat", "r");
-	if (open == NULL) {
-		printf("缺少配置文件");
-		exit(0);
-	}
-	fscanf(open, "%d", &set.map_height);
-	fscanf(open, "%d", &set.map_width);
-	fscanf(open, "%d", &set.map_board_length);
-	fscanf(open, "%d", &set.player_height);
-	fscanf(open, "%d", &set.player_width);
-	fscanf(open, "%f", &set.player_drop_acc);
-	fscanf(open, "%llu", &set.dp_tpf);
-	fscanf(open, "%d", &set.dp_tpl);
-	fscanf(open, "%f", &set.velocity_UD);
-	fscanf(open, "%f", &set.velocity_LR);
-	fscanf(open, "%d", &set.remain_bounce_line);
-	fclose(open);
+	read_data(&set);
 	player1.x = set.map_width >> 1;
 	player1.y = 1;
 	Map = (char**)malloc(sizeof(char*) * (set.map_height + 1));
@@ -172,7 +155,6 @@ int main() {
 }
 #endif // BACK_DEBUG
 int main() {
-	//point = fopen("D:\\game_debug.txt", "w");
 	init();
 	system("pause");
 	return 0;
