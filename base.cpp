@@ -6,6 +6,8 @@
 #include "back_end.h"
 #include <time.h>
 //#define BACK_DEBUG
+
+void main_iterface();//开始的界面 
 void start_game() {
 	add_board(&head, &tail, 1, (set.map_width >> 1) - 1, 1);
 	multi_gen_board(&set, &head, &tail, 4, 100);
@@ -51,7 +53,8 @@ void start_game() {
 		}
 		//判断是否坠入虚空
 		if (drop_into_void(&set, &player1)) {
-			exit(0);
+			gameover(&set,&player1);
+			return; 
 		}
 		//判断是否碰撞
 		switch (land_on_board(&set, head, &player1))
@@ -123,15 +126,23 @@ void init() {  //游戏数据的初始化
         CONSOLE_TEXTMODE_BUFFER,
         NULL
     );
-    
+    hOutput = CreateConsoleScreenBuffer(
+        GENERIC_WRITE,//定义进程可以往缓冲区写数据
+        FILE_SHARE_WRITE,//定义缓冲区可共享写权限
+        NULL,
+        CONSOLE_TEXTMODE_BUFFER,
+        NULL
+    );
     //隐藏缓冲区的光标
     CONSOLE_CURSOR_INFO cci;
     cci.bVisible = 0;
     cci.dwSize = 1;
     SetConsoleCursorInfo(hOutBuf, &cci);
-
+	SetConsoleCursorInfo(hOutput, &cci);
+	
+	
 	print_frame(&set);
-	start_game();
+	main_iterface();	
 }
 
 #ifdef BACK_DEBUG
@@ -156,6 +167,20 @@ int main() {
 #endif // BACK_DEBUG
 int main() {
 	init();
+	while(1)
+	{	SetConsoleActiveScreenBuffer(hOutput);
+		fflush(stdin);
+		char s=getchar();
+		switch(s)
+		{	case '3':	exit(0);break;//退出游戏 
+			case '2':	break;//我还没想好 
+			case '1':	start_game();	break; //开始游戏 
+		}
+		fflush(stdin);
+		getchar();
+		fflush(stdin);
+		Sleep(1000); 
+	}
 	system("pause");
 	return 0;
 }

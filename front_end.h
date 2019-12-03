@@ -1,7 +1,7 @@
 #pragma once
 #include <Windows.h>
 #include "struct_def.h"
-HANDLE hOutBuf;//控制台屏幕缓冲区句柄 
+HANDLE hOutput ,hOutBuf;//控制台屏幕缓冲区句柄 
 COORD coord = { 0,0 };//双缓冲处理显示 
 DWORD bytes = 0;
 
@@ -35,6 +35,29 @@ void print_frame(struct settings* set)
 		coord.X = i; coord.Y = set->map_height + 1; WriteConsoleOutputCharacterA(hOutBuf, "_", 1, coord, &bytes);
 	}
 }
+
+void main_iterface()
+{	for(int i=1;i<=5;i++) 
+	{	coord.X = 0;coord.Y = i;
+		WriteConsoleOutputCharacterA(hOutput, "|", 1, coord, &bytes);
+		coord.X = 51;coord.Y = i;
+		WriteConsoleOutputCharacterA(hOutput, "|", 1, coord, &bytes);
+	}
+	for(int i=1;i<=50;i++) 
+	{	coord.X = i;coord.Y = 0;
+		WriteConsoleOutputCharacterA(hOutput, "_", 1, coord, &bytes);
+		coord.X = i;coord.Y = 5;
+		WriteConsoleOutputCharacterA(hOutput, "_", 1, coord, &bytes);
+	}
+	coord.X = 10;coord.Y = 2;
+	WriteConsoleOutputCharacterA(hOutput, "1.开始游戏", 11, coord, &bytes);
+	coord.X = 30;coord.Y = 2;
+	WriteConsoleOutputCharacterA(hOutput, "2.游戏说明", 11, coord, &bytes);
+	coord.X = 10;coord.Y = 4;
+	WriteConsoleOutputCharacterA(hOutput,"3.退出游戏", 11, coord, &bytes);
+	coord.X = 2;coord.Y = 7;
+	WriteConsoleOutputCharacterA(hOutput, "请选择【1 2 3】：【  】", 24, coord, &bytes);
+} 
 
 void render_boards(struct board* head, struct settings* set, char*** Map)
 // 将链表生成数组Map 

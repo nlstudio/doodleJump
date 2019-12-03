@@ -36,3 +36,39 @@ void show(struct player* pla,struct settings* set)
     //设置新的缓冲区为活动显示缓冲
     SetConsoleActiveScreenBuffer(hOutBuf);
 }
+
+void gameover(struct settings* set,struct player* pla)
+{
+	for(int i=set->map_height/3+1;i<=set->map_height*2/3+1;i++) 
+	{	
+	coord.X = 0;coord.Y = i;WriteConsoleOutputCharacterA(hOutBuf, "|", 1, coord, &bytes);
+	coord.X = set->map_width+1;coord.Y = i;	WriteConsoleOutputCharacterA(hOutBuf,"|", 1, coord, &bytes);
+	}
+	for(int i=1;i<=set->map_width;i++) 
+	{	coord.X = i;coord.Y =set->map_height/3;WriteConsoleOutputCharacterA(hOutBuf, "_", 1, coord, &bytes);
+		coord.X = i;coord.Y = set->map_height*2/3+1;WriteConsoleOutputCharacterA(hOutBuf, "_", 1, coord, &bytes);
+	}
+	for(int j=set->map_height/3+1;j<=set->map_height*2/3;j++)
+	for(int i=1;i<=set->map_width;i++)
+	{	coord.X = i;coord.Y = j;
+		WriteConsoleOutputCharacterA(hOutBuf, " ", 1, coord, &bytes);
+	}
+
+	coord.X = set->map_width/3;coord.Y = set->map_height/2;
+	WriteConsoleOutputCharacterA(hOutBuf, "gameover", 9, coord, &bytes);
+	
+	coord.X = set->map_width/3;coord.Y = set->map_height/2+1;
+	char s[15]={"your score:"};
+    int score=pla->y+14;
+	s[12]=(score/100==0?32:48+score/100);
+	s[13]=(char)(48+(score%100)/10);
+	s[14]=(char)(48+score%10); 
+	WriteConsoleOutputCharacterA(hOutBuf, s, 15, coord, &bytes);
+	
+	coord.X = set->map_width/3;coord.Y = set->map_height/2+2;
+	WriteConsoleOutputCharacterA(hOutBuf, "按ENTER键继续", 14, coord, &bytes);
+
+	SetConsoleActiveScreenBuffer(hOutBuf);
+	//设置新的缓冲区为活动显示缓冲
+}
+
