@@ -9,13 +9,16 @@
 
 void main_iterface();//开始的界面 
 void start_game() {
-	add_board(&head, &tail, 1, (set.map_width >> 1) - 1, 1);
-	multi_gen_board(&set, &head, &tail, 4, 100);
-	int current_board = 100;  //记录当前板生成到了哪一行
+	set.line = 1;
+	player1.x = set.map_width >> 1;
+	player1.y = 1;
 	player1.pre_time = GetTickCount();
 	player1.pre_board = 1;
 	player1.pre_board_type = 1;
 	player1.remain_bounce_line = set.remain_bounce_line;
+	add_board(&head, &tail, 1, (set.map_width >> 1) - 1, 1);
+	multi_gen_board(&set, &head, &tail, 4, 100);
+	int current_board = 100;  //记录当前板生成到了哪一行
 	while (1) {
 		unsigned long long current_time = GetTickCount();//此次操作开始的基准时间
 		//读取键盘输入
@@ -54,6 +57,9 @@ void start_game() {
 		//判断是否坠入虚空
 		if (drop_into_void(&set, &player1)) {
 			gameover(&set,&player1);
+			while (head != NULL) {
+				delete_board(&head, &tail, head->line_id);
+			}
 			return; 
 		}
 		//判断是否碰撞
@@ -107,8 +113,6 @@ void start_game() {
 }
 void init() {  //游戏数据的初始化
 	read_data(&set);
-	player1.x = set.map_width >> 1;
-	player1.y = 1;
 	Map = (char**)malloc(sizeof(char*) * (set.map_height + 1));
 	for (int i = 0; i <= set.map_height; i++) {
 		Map[i] = (char*)malloc(sizeof(char) * set.map_width + 1);
