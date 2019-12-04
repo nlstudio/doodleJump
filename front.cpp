@@ -84,7 +84,7 @@ void gameover(struct settings* set,struct player* pla)
 
 void intro()
 {
-	char s[13][60]={"Description"," 把红旗插上无穷的高峰！","向上跳跃，不要坠入虚空！","Howto play ","用方向键操纵小人左右移动，当小人落在跳板上时会向上弹起。","左移： A 或 ←","右移： D 或 →","Main Contributors","@lhy ：Backend Developer","@lz ：Frontend Developer","@Jonbgua ：Program Manager, Software Architect"};
+	char s[13][60]={"Description","把红旗插上无穷的高峰！","向上跳跃，不要坠入虚空！","Howto play ","用方向键操纵小人左右移动，当小人落在跳板上时会向上弹起。","左移： A 或 ←","右移： D 或 →","Main Contributors","@lhy ：Backend Developer","@lz ：Frontend Developer","@Jonbgua ：Program Manager, Software Architect"};
 	HANDLE hOut;
 	hOut = CreateConsoleScreenBuffer(
         GENERIC_WRITE,//定义进程可以往缓冲区写数据
@@ -107,7 +107,7 @@ void intro()
     coord.Y = 10;
     WriteConsoleOutputCharacterA(hOut, s[3], 50, coord, &bytes);
     coord.Y = 12;
-    WriteConsoleOutputCharacterA(hOut, s[4], 50, coord, &bytes);
+    WriteConsoleOutputCharacterA(hOut, s[4], 60, coord, &bytes);
     coord.Y = 13;
     WriteConsoleOutputCharacterA(hOut, s[5], 50, coord, &bytes);
     coord.Y = 14;
