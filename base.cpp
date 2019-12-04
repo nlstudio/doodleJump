@@ -146,8 +146,23 @@ void init() {  //游戏数据的初始化
 	SetConsoleCursorInfo(hOutput, &cci);
 	
 	
+	/*COORD size = { set.map_width+5,set.map_height+5 };
+	
+	SetConsoleScreenBufferSize(, size);
+	SetConsoleScreenBufferSize(, size);
+
+	Sleep(3000);
+	
+	
+	system("mode con cols=30 lines=20");
+	Sleep(3000);
+	modeset(20,30);*/modeset(set.map_width+3,set.map_height+5,hOutput);
+	modeset(set.map_width+3,set.map_height+5,hOutBuf);
+
+
 	print_frame(&set);
-	main_iterface();	
+	main_iterface();
+		
 }
 
 #ifdef BACK_DEBUG

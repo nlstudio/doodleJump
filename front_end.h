@@ -34,28 +34,39 @@ void print_frame(struct settings* set)
 		coord.X = i; coord.Y = 0; WriteConsoleOutputCharacterA(hOutBuf, "_", 1, coord, &bytes);
 		coord.X = i; coord.Y = set->map_height + 1; WriteConsoleOutputCharacterA(hOutBuf, "_", 1, coord, &bytes);
 	}
+	for(int i=1;i<=set->map_height + 1;i++) 
+	{	coord.X = 0;coord.Y = i;
+		WriteConsoleOutputCharacterA(hOutput, "|", 1, coord, &bytes);
+		coord.X = set->map_width + 1;coord.Y = i;
+		WriteConsoleOutputCharacterA(hOutput, "|", 1, coord, &bytes);
+	}
+	for(int i=1;i<=set->map_width;i++) 
+	{	coord.X = i;coord.Y = 0;
+		WriteConsoleOutputCharacterA(hOutput, "_", 1, coord, &bytes);
+		coord.X = i;coord.Y = set->map_height + 1;
+		WriteConsoleOutputCharacterA(hOutput, "_", 1, coord, &bytes);
+	}
 }
 
 void main_iterface()
-{	for(int i=1;i<=5;i++) 
-	{	coord.X = 0;coord.Y = i;
-		WriteConsoleOutputCharacterA(hOutput, "|", 1, coord, &bytes);
-		coord.X = 51;coord.Y = i;
-		WriteConsoleOutputCharacterA(hOutput, "|", 1, coord, &bytes);
+{
+	char string[12][35]={"    ___                _ _       ","   /   \\___   ___   __| | | ___  ","  / /\\ / _ \\ / _ \\ / _` | |/ _ \\ "," / /_// (_) | (_) | (_| | |  __/ ","/___,' \\___/ \\___/ \\__,_|_|\\___| ","  __   ","  \\ \\ _   _ _ __ ___  _ __  ","   \\ \\ | | | '_ ` _ \\| '_ \\ ","/\\_/ / |_| | | | | | | |_) |","\\___/ \\__,_|_| |_| |_| .__/ ","                     |_|    "};
+	for(int i=0;i<=4;i++)
+	{	coord.X = 4;coord.Y = i+2;
+		WriteConsoleOutputCharacterA(hOutput, string[i], 35, coord, &bytes);
 	}
-	for(int i=1;i<=50;i++) 
-	{	coord.X = i;coord.Y = 0;
-		WriteConsoleOutputCharacterA(hOutput, "_", 1, coord, &bytes);
-		coord.X = i;coord.Y = 5;
-		WriteConsoleOutputCharacterA(hOutput, "_", 1, coord, &bytes);
+	for(int i=5;i<=11;i++)
+	{	coord.X = 26;coord.Y = i+4;
+		WriteConsoleOutputCharacterA(hOutput, string[i], 35, coord, &bytes);
 	}
-	coord.X = 10;coord.Y = 2;
+	
+	coord.X = 10;coord.Y = 18;
 	WriteConsoleOutputCharacterA(hOutput, "1.开始游戏", 11, coord, &bytes);
-	coord.X = 30;coord.Y = 2;
+	coord.X = 35;coord.Y = 18;
 	WriteConsoleOutputCharacterA(hOutput, "2.游戏说明", 11, coord, &bytes);
-	coord.X = 10;coord.Y = 4;
+	coord.X = 10;coord.Y = 21;
 	WriteConsoleOutputCharacterA(hOutput,"3.退出游戏", 11, coord, &bytes);
-	coord.X = 2;coord.Y = 7;
+	coord.X = 10;coord.Y = 24;
 	WriteConsoleOutputCharacterA(hOutput, "请选择【1 2 3】：【  】", 24, coord, &bytes);
 } 
 
@@ -96,3 +107,12 @@ void render_boards(struct board* head, struct settings* set, char*** Map)
 		p = p->next;
 	}
 }
+
+void modeset(int w,int h,HANDLE hOut) {
+	COORD size = {w, h};
+	SetConsoleScreenBufferSize(hOut,size);
+	SMALL_RECT rc = {1,1, w, h};
+	SetConsoleWindowInfo(hOut ,true ,&rc);
+	return;
+}
+

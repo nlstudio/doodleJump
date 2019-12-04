@@ -28,12 +28,14 @@ void show(struct player* pla,struct settings* set)
 	{   Map[j][i]='*';
 	}
 	
-	for (int i = 1; i <=set->map_height; i++)
+	for (int i = 2; i <=set->map_height; i++)
     {
         coord.Y = i;coord.X = 1;
         WriteConsoleOutputCharacterA(hOutBuf, Map[i], set->map_width, coord, &bytes);
     }
-    coord.Y = set->map_height/2;coord.X = set->map_width+5;
+    
+    coord.Y = 1;coord.X = set->map_width-20;
+    
     char s[15]={"your score:"};
     /*static int score;
 	score=(pla->y > score ? pla->y:score);*/
