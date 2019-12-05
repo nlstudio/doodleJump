@@ -1,6 +1,6 @@
 # Doodle  Jump
 
-[项目主页](https://github.com/nlstudio/doodleJump) | [项目文档](https://doodlejump.nlstudio.jonbgua.com/) | [国内镜像](https://nlstudio.coding.net/p/doodlejump/d/doodlejump/git)
+[项目主页](https://github.com/nlstudio/doodleJump) | [项目文档](https://doodlejump.nlstudio.jonbgua.com/) | [下载游戏](https://github.com/nlstudio/doodleJump/releases/latest) | [国内镜像](https://nlstudio.coding.net/p/doodlejump/d/doodlejump/git)
 
 用 C 语言在命令行下复刻经典手机游戏涂鸦跳跃。
 
