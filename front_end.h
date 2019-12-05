@@ -66,6 +66,8 @@ void main_iterface()
 	WriteConsoleOutputCharacterA(hOutput, "2.游戏说明", 11, coord, &bytes);
 	coord.X = 10;coord.Y = 21;
 	WriteConsoleOutputCharacterA(hOutput,"3.退出游戏", 11, coord, &bytes);
+	coord.X = 35;coord.Y = 21;
+	WriteConsoleOutputCharacterA(hOutput,"4.排行榜！", 11, coord, &bytes);
 	coord.X = 10;coord.Y = 24;
 	WriteConsoleOutputCharacterA(hOutput, "请选择【1 2 3】：【  】", 24, coord, &bytes);
 } 

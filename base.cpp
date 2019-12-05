@@ -200,7 +200,8 @@ int main() {
 		fflush(stdin);
 		char s=getch();
 		switch(s)
-		{	case '3':	exit_game(high_score, &current_score);break;//退出游戏 
+		{	case '4':	rank();break;//排行榜 
+			case '3':	exit_game(high_score, &current_score);break;//退出游戏 
 			case '2':	intro();break;//游戏介绍 
 			case '1':	start_game();	break; //开始游戏
 			default:	continue; //防止你按错键 导致无法进入游戏 

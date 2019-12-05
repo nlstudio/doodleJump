@@ -127,4 +127,56 @@ void intro()
     return ;
 }
 
+void rank()
+{
+	char s[5][60]={" __                    _                         _ ","/ _\\ ___ ___  _ __ ___| |__   ___   __ _ _ __ __| |","\\ \\ / __/ _ \\| '__/ _ \\ '_ \\ / _ \\ / _` | '__/ _` |","_\\ \\ (_| (_) | | |  __/ |_) | (_) | (_| | | | (_| |","\\__/\\___\\___/|_|  \\___|_.__/ \\___/ \\__,_|_|  \\__,_|"};
+	HANDLE hOut;
+	hOut = CreateConsoleScreenBuffer(
+        GENERIC_WRITE,//定义进程可以往缓冲区写数据
+        FILE_SHARE_WRITE,//定义缓冲区可共享写权限
+        NULL,
+        CONSOLE_TEXTMODE_BUFFER,
+        NULL
+    );
+    CONSOLE_CURSOR_INFO cci;
+    cci.bVisible = 0;
+    cci.dwSize = 1;
+    SetConsoleCursorInfo(hOut, &cci);
+    coord.X = 5;
+	coord.Y = 3;
+    WriteConsoleOutputCharacterA(hOut, s[0], 52, coord, &bytes);
+    coord.Y = 4;
+    WriteConsoleOutputCharacterA(hOut, s[1], 52, coord, &bytes);
+    coord.Y = 5;
+    WriteConsoleOutputCharacterA(hOut, s[2], 52, coord, &bytes);
+    coord.Y = 6;
+    WriteConsoleOutputCharacterA(hOut, s[3], 52, coord, &bytes);
+    coord.Y = 7;
+    WriteConsoleOutputCharacterA(hOut, s[4], 52, coord, &bytes);
+    
+    
+    coord.X = 6;
+	coord.Y = 20;
+    WriteConsoleOutputCharacterA(hOut, "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _", 50, coord, &bytes);
+    
+    
+    coord.X = 14;
+	coord.Y = 23;
+    WriteConsoleOutputCharacterA(hOut, "[ U ]  Upload your score", 25, coord, &bytes);
+    coord.Y = 25;
+    WriteConsoleOutputCharacterA(hOut, "[ D ]  Download the scoreboard", 25, coord, &bytes);
+    
+    SetConsoleActiveScreenBuffer(hOut);
+    //fflush(stdin);
+    getch();
+    
+	return; 
+	
+	
+	
+	
+	
+	
+} 
+
 
