@@ -61,7 +61,12 @@ void start_game() {
 			while (head != NULL) {
 				delete_board(&head, &tail, head->line_id);
 			}
-			return; 
+			char name[200];
+			fflush(stdin);
+			printf("输入你的名称：");
+			scanf("%s", name);
+			save_score(high_score, &current_score, name, set.line);
+			return;
 		}
 		//判断是否碰撞
 		switch (land_on_board(&set, head, &player1))
@@ -122,6 +127,9 @@ void init() {  //游戏数据的初始化
 		}
 	}
 	srand(time(0));
+	
+	//读入玩家历史得分数据
+	read_score(high_score, &current_score);
 	
 	 //创建新的控制台缓冲区
     hOutBuf = CreateConsoleScreenBuffer(
@@ -192,7 +200,7 @@ int main() {
 		fflush(stdin);
 		char s=getch();
 		switch(s)
-		{	case '3':	exit(0);break;//退出游戏 
+		{	case '3':	exit_game(high_score, &current_score);break;//退出游戏 
 			case '2':	intro();break;//游戏介绍 
 			case '1':	start_game();	break; //开始游戏
 			default:	continue; //防止你按错键 导致无法进入游戏 
