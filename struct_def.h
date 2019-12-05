@@ -1,4 +1,6 @@
 #pragma once
+#define MAX_SCORE_NUMBER 100      //存储最多多少个玩家的最高分数记录
+
 struct settings {
 	int map_height;               //地图高度
 	int map_width;                //地图宽度
@@ -10,6 +12,7 @@ struct settings {
 	/* 速度及加速度的单位为行每秒或每秒平方 */
 	float velocity_LR;            //左右移动的速度
 	int remain_bounce_line;       //玩家能向上跳多少行
+	char ip_address[16];          //服务器的IP地址
 };
 
 struct player {
@@ -26,4 +29,10 @@ struct board {
 	int x;                        //左端点位置
 	char type;                    //板的类型，默认为1
 	struct board* next;           //下一个节点
+};
+
+struct score {
+	char player_name[128];        //玩家名字
+	int player_score;             //玩家得分
+	int if_upload;                //是否上传过
 };

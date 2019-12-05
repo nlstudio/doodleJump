@@ -1,6 +1,9 @@
 #pragma once
+#include <stdio.h>
 #include <stdlib.h>
+#include <algorithm>
 #include "struct_def.h"
+using namespace std;
 void add_board(struct board** head, struct board** tail, int line_id, int x, char type)
 // ¼Ó°å
 {
@@ -109,6 +112,7 @@ void read_data(struct settings* set) {
 	set->velocity_LR = 1;
 	set->dp_tpf = 100;
 	set->remain_bounce_line = 7;
+	strcpy(set->ip_address, "47.103.31.177");
 	if (open != NULL) {
 		while (!feof(open)) {
 			fscanf(open, "%s", str);
@@ -144,6 +148,9 @@ void read_data(struct settings* set) {
 				fscanf(open, "%d", &set->remain_bounce_line);
 				continue;
 			}
+			if (!strcmp(str, "[IP_address]")) {
+				fscanf(open, "%s", set->ip_address);
+			}
 		}
 		fclose(open);
 	}
@@ -155,6 +162,39 @@ void read_data(struct settings* set) {
 	fprintf(open, "%s\n%d\n", "[player_width]", set->player_width);
 	fprintf(open, "%s\n%f\n", "[velocity_LR]", set->velocity_LR);
 	fprintf(open, "%s\n%llu\n", "[dp_tpf]", set->dp_tpf);
-	fprintf(open, "%s\n%d", "[remain_bounce_line]", set->remain_bounce_line);
+	fprintf(open, "%s\n%d\n", "[remain_bounce_line]", set->remain_bounce_line);
+	fprintf(open, "%s\n%s", "[IP_address]", set->ip_address);
 	fclose(open);
+}
+
+bool score_cmp(struct score a, struct score b) {
+	return a.player_score > b.player_score;
+}
+
+void save_score(struct score* player_score, int* current_score, char* name, int score) {
+	strcpy(player_score[*current_score].player_name, name);
+	player_score[*current_score].player_score = score;
+	player_score[*current_score].if_upload = 0;
+	sort(&player_score[0], &player_score[*(current_score)+1], score_cmp);
+	if ((*current_score) != MAX_SCORE_NUMBER) {
+		(*current_score)++;
+	}
+}
+
+void read_score(struct score* player_score, int* current_score) {
+	memset(player_score, 0, sizeof(struct score) * (MAX_SCORE_NUMBER + 1));
+	FILE* read = fopen("score_data.dat", "rb");
+	if (read != NULL) {
+		fread(current_score, sizeof(int), 1, read);
+		fread(player_score, sizeof(struct score), *current_score, read);
+		fclose(read);
+	}
+}
+
+void exit_game(struct score* player_score, int* current_score) {
+	FILE* out = fopen("score_data.dat", "w");
+	fwrite(current_score, sizeof(int), 1, out);
+	fwrite(player_score, sizeof(struct score), *current_score, out);
+	fclose(out);
+	exit(0);
 }
