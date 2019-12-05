@@ -20,7 +20,7 @@
 
 ## 截图	Screenshots
 
-![游戏画面截图](docs/img/screenshot-v1.2.0.png)
+![游戏画面截图](https://doodlejump.nlstudio.jonbgua.com/img/screenshot-v1.2.0.png)
 
 
 ## 主要贡献者	Main Contributors
