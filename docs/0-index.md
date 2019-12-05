@@ -1,2 +1,0 @@
-# Doodle Jump
-
