@@ -61,11 +61,13 @@ void start_game() {
 			while (head != NULL) {
 				delete_board(&head, &tail, head->line_id);
 			}
-			char name[200];
+			/*char name[200];
 			fflush(stdin);
 			printf("输入你的名称：");
 			scanf("%s", name);
-			save_score(high_score, &current_score, name, set.line);
+			save_score(high_score, &current_score, name, set.line);*/
+			fflush(stdin);
+			getchar();
 			return;
 		}
 		//判断是否碰撞
@@ -206,9 +208,7 @@ int main() {
 			case '1':	start_game();	break; //开始游戏
 			default:	continue; //防止你按错键 导致无法进入游戏 
 		}
-		fflush(stdin);
-		getchar();
-		fflush(stdin);
+		
 		Sleep(1000); 
 	}
 	system("pause");

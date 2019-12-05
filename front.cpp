@@ -122,7 +122,7 @@ void intro()
     WriteConsoleOutputCharacterA(hOut, s[10], 50, coord, &bytes);
     
     SetConsoleActiveScreenBuffer(hOut);
-    //fflush(stdin);
+    fflush(stdin);
     _getch();
     return ;
 }
@@ -166,11 +166,20 @@ void game_rank()
     coord.Y = 25;
     WriteConsoleOutputCharacterA(hOut, "[ D ]  Download the scoreboard", 25, coord, &bytes);
     
-    SetConsoleActiveScreenBuffer(hOut);
-    //fflush(stdin);
-    _getch();
+    while(1)
+    {
+    	SetConsoleActiveScreenBuffer(hOut);
+    	fflush(stdin);
+    	char a=_getch();
+    	switch(a)
+    	{	case 'u':	break;
+   			case 'd':	break;
+ 			default:	return; 	
+		}	
+	}
     
-	return; 
+    
+
 	
 	
 	
