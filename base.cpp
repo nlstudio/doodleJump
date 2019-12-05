@@ -198,9 +198,9 @@ int main() {
 	while(1)
 	{	SetConsoleActiveScreenBuffer(hOutput);
 		fflush(stdin);
-		char s=getch();
+		char s=_getch();
 		switch(s)
-		{	case '4':	rank();break;//排行榜 
+		{	case '4':	game_rank();break;//排行榜 
 			case '3':	exit_game(high_score, &current_score);break;//退出游戏 
 			case '2':	intro();break;//游戏介绍 
 			case '1':	start_game();	break; //开始游戏

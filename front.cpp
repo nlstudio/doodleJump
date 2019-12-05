@@ -123,11 +123,11 @@ void intro()
     
     SetConsoleActiveScreenBuffer(hOut);
     //fflush(stdin);
-    getch();
+    _getch();
     return ;
 }
 
-void rank()
+void game_rank()
 {
 	char s[5][60]={" __                    _                         _ ","/ _\\ ___ ___  _ __ ___| |__   ___   __ _ _ __ __| |","\\ \\ / __/ _ \\| '__/ _ \\ '_ \\ / _ \\ / _` | '__/ _` |","_\\ \\ (_| (_) | | |  __/ |_) | (_) | (_| | | | (_| |","\\__/\\___\\___/|_|  \\___|_.__/ \\___/ \\__,_|_|  \\__,_|"};
 	HANDLE hOut;
@@ -168,7 +168,7 @@ void rank()
     
     SetConsoleActiveScreenBuffer(hOut);
     //fflush(stdin);
-    getch();
+    _getch();
     
 	return; 
 	
