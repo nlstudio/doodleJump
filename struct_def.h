@@ -1,5 +1,6 @@
 #pragma once
 #define MAX_SCORE_NUMBER 100      //存储最多多少个玩家的最高分数记录
+#define MAX_SCORE_SERVER 20       //服务器分数记录个数的上限
 
 struct settings {
 	int map_height;               //地图高度

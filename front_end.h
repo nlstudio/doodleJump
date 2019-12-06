@@ -109,4 +109,3 @@ void modeset(int w,int h,HANDLE hOut) {
 	SetConsoleWindowInfo(hOut ,true ,&rc);
 	return;
 }
-

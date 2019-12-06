@@ -14,7 +14,7 @@
 // Link with ws2_32.lib
 #pragma comment(lib, "Ws2_32.lib")
 
-#define DEFAULT_BUFLEN 512
+#define DEFAULT_BUFLEN 4096
 #define DEFAULT_PORT 5000
 
 int upload_score(struct settings* set, char* player_name, int score) {
@@ -98,7 +98,7 @@ int upload_score(struct settings* set, char* player_name, int score) {
 	return 0;
 }
 
-int download_score(struct settings* set) {
+int download_score(struct settings* set, struct score* server_score) {
 	FILE* connection_log = fopen("connection_log.dat", "a");
 
 	SYSTEMTIME time;
@@ -175,7 +175,7 @@ int download_score(struct settings* set) {
 	}
 
 	// Receive until the peer closes the connection
-	do {
+	/*do {
 
 		iResult = recv(ConnectSocket, recvbuf, recvbuflen, 0);
 		if (iResult > 0)
@@ -185,8 +185,36 @@ int download_score(struct settings* set) {
 		else
 			fwprintf(connection_log, L"recv failed with error: %d\n", WSAGetLastError());
 
-	} while (iResult > 0);
+	} while (iResult > 0);*/
+	iResult = recv(ConnectSocket, recvbuf, recvbuflen, 0);
+	if (iResult > 0) {
+		fwprintf(connection_log, L"Bytes received: %d\n", iResult);
+	}
 
+	iResult = recv(ConnectSocket, recvbuf, recvbuflen, 0);
+	if (iResult > 0) {
+		fwprintf(connection_log, L"Bytes received: %d\n", iResult);
+	}
+
+	char* manage_score = recvbuf;
+	while (!((*manage_score) == '\n' && (*(manage_score + 2)) == '\n')) {
+		manage_score++;
+	}
+	manage_score += 4;
+	for (int i = 0; (*manage_score) != '\0'; i++) {
+		int j = 0;
+		while (*(manage_score + j) != ',') {
+			j++;
+		}
+		strncpy(server_score[i].player_name, manage_score, j);
+		server_score[i].player_name[j] = '\0';
+		manage_score += (j + 1);
+		sscanf(manage_score, "%d", &server_score[i].player_score);
+		while (!((*manage_score) == '\n')) {
+			manage_score++;
+		}
+		manage_score += 1;
+	}
 
 	// close the socket
 	iResult = closesocket(ConnectSocket);
