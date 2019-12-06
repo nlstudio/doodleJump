@@ -58,16 +58,16 @@ void start_game() {
 		//判断是否坠入虚空
 		if (drop_into_void(&set, &player1)) {
 			gameover(&set,&player1);
+			fflush(stdin);
+			getchar();
 			while (head != NULL) {
 				delete_board(&head, &tail, head->line_id);
 			}
-			/*char name[200];
-			fflush(stdin);
-			printf("输入你的名称：");
-			scanf("%s", name);
-			save_score(high_score, &current_score, name, set.line);*/
-			fflush(stdin);
-			getchar();
+			//char name[200]; 
+			//最好把名字定义成全局 
+			in_name();//输入名字！ 
+			//save_score(high_score, &current_score, name, set.line);
+			
 			return;
 		}
 		//判断是否碰撞
@@ -170,7 +170,8 @@ void init() {  //游戏数据的初始化
 	modeset(set.map_width+3,set.map_height+5,hOutBuf);
 
 
-	print_frame(&set);
+	print_frame(&set,hOutput);
+	print_frame(&set,hOutBuf);
 	main_iterface();
 		
 }

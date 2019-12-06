@@ -21,30 +21,22 @@ void gotoxy(int x, int y)
 	SetConsoleCursorPosition(handle, pos);
 }
 
-void print_frame(struct settings* set)
+void print_frame(struct settings* set,HANDLE handle)
 // 游戏开始时，打印边框 
 {
 	for (int i = 1; i <= set->map_height + 1; i++)
 	{
-		coord.X = 0; coord.Y = i; WriteConsoleOutputCharacterA(hOutBuf, "|", 1, coord, &bytes);
-		coord.X = set->map_width + 1; coord.Y = i; WriteConsoleOutputCharacterA(hOutBuf, "|", 1, coord, &bytes);
+		coord.X = 0; coord.Y = i;
+		WriteConsoleOutputCharacterA(handle, "|", 1, coord, &bytes);
+		coord.X = set->map_width + 1;
+		coord.Y = i; WriteConsoleOutputCharacterA(handle, "|", 1, coord, &bytes);
 	}
 	for (int i = 1; i <= set->map_width; i++)
 	{
-		coord.X = i; coord.Y = 0; WriteConsoleOutputCharacterA(hOutBuf, "_", 1, coord, &bytes);
-		coord.X = i; coord.Y = set->map_height + 1; WriteConsoleOutputCharacterA(hOutBuf, "_", 1, coord, &bytes);
-	}
-	for(int i=1;i<=set->map_height + 1;i++) 
-	{	coord.X = 0;coord.Y = i;
-		WriteConsoleOutputCharacterA(hOutput, "|", 1, coord, &bytes);
-		coord.X = set->map_width + 1;coord.Y = i;
-		WriteConsoleOutputCharacterA(hOutput, "|", 1, coord, &bytes);
-	}
-	for(int i=1;i<=set->map_width;i++) 
-	{	coord.X = i;coord.Y = 0;
-		WriteConsoleOutputCharacterA(hOutput, "_", 1, coord, &bytes);
-		coord.X = i;coord.Y = set->map_height + 1;
-		WriteConsoleOutputCharacterA(hOutput, "_", 1, coord, &bytes);
+		coord.X = i; coord.Y = 0;
+		WriteConsoleOutputCharacterA(handle, "_", 1, coord, &bytes);
+		coord.X = i; coord.Y = set->map_height + 1;
+		WriteConsoleOutputCharacterA(handle, "_", 1, coord, &bytes);
 	}
 }
 

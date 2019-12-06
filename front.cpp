@@ -168,6 +168,7 @@ void game_rank()
     
     while(1)
     {
+    	print_score(hOut);
     	SetConsoleActiveScreenBuffer(hOut);
     	fflush(stdin);
     	char a=_getch();
@@ -187,5 +188,38 @@ void game_rank()
 	
 	
 } 
+void print_score(HANDLE handle){ return ;}
+void in_name()
+{	char name[20];
+	HANDLE hOut;
+	hOut = CreateConsoleScreenBuffer(
+        GENERIC_WRITE,//定义进程可以往缓冲区写数据
+        FILE_SHARE_WRITE,//定义缓冲区可共享写权限
+        NULL,
+        CONSOLE_TEXTMODE_BUFFER,
+        NULL
+    );
+	CONSOLE_CURSOR_INFO cci;
+    cci.bVisible = 1;
+    cci.dwSize = 1;
+    SetConsoleCursorInfo(hOut, &cci);
+
+
+	print_frame(&set,hOut);
+	coord.X = 2;coord.Y = 6;
+	WriteConsoleOutputCharacterA(hOut, "input your name:",17, coord, &bytes);
+	
+	SetConsoleActiveScreenBuffer(hOut);
+	
+	coord.X = 8;coord.Y = 8;
+	SetConsoleCursorPosition(hOut, coord);
+	SetConsoleTextAttribute(hOut, 12);
+	
+	fflush(stdin);
+	gets(name);
+	
+
+	return ;
+}
 
 
