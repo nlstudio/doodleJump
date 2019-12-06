@@ -18,6 +18,14 @@
 #define DEFAULT_PORT 5000
 
 int upload_score(struct settings* set, char* player_name, int score) {
+	FILE* connection_log = fopen("connection_log.dat", "a");
+
+	SYSTEMTIME time;
+	GetLocalTime(&time);
+
+	fprintf(connection_log, "\nUpload process\n");
+	fprintf(connection_log, "Time:\n");
+	fprintf(connection_log, "%u.%02u.%02u %02u:%02u:%02u\n", time.wYear, time.wMonth, time.wDay, time.wHour, time.wMinute, time.wSecond);
 
 	int iResult;
 	WSADATA wsaData;
@@ -37,13 +45,13 @@ int upload_score(struct settings* set, char* player_name, int score) {
 
 	iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
 	if (iResult != NO_ERROR) {
-		wprintf(L"WSAStartup failed with error: %d\n", iResult);
+		fwprintf(connection_log, L"WSAStartup failed with error: %d\n", iResult);
 		return 1;
 	}
 
 	ConnectSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (ConnectSocket == INVALID_SOCKET) {
-		wprintf(L"socket failed with error: %ld\n", WSAGetLastError());
+		fwprintf(connection_log, L"socket failed with error: %ld\n", WSAGetLastError());
 		WSACleanup();
 		return 1;
 	}
@@ -54,7 +62,7 @@ int upload_score(struct settings* set, char* player_name, int score) {
 
 	iResult = connect(ConnectSocket, (SOCKADDR*)&clientService, sizeof(clientService));
 	if (iResult == SOCKET_ERROR) {
-		wprintf(L"connect failed with error: %d\n", WSAGetLastError());
+		fwprintf(connection_log, L"connect failed with error: %d\n", WSAGetLastError());
 		closesocket(ConnectSocket);
 		WSACleanup();
 		return 1;
@@ -62,17 +70,17 @@ int upload_score(struct settings* set, char* player_name, int score) {
 
 	iResult = send(ConnectSocket, sendbuf, (int)strlen(sendbuf), 0);
 	if (iResult == SOCKET_ERROR) {
-		wprintf(L"send failed with error: %d\n", WSAGetLastError());
+		fwprintf(connection_log, L"send failed with error: %d\n", WSAGetLastError());
 		closesocket(ConnectSocket);
 		WSACleanup();
 		return 1;
 	}
 
-	printf("Bytes Sent: %d\n", iResult);
+	fprintf(connection_log, "Bytes Sent: %d\n", iResult);
 
 	iResult = shutdown(ConnectSocket, SD_SEND);
 	if (iResult == SOCKET_ERROR) {
-		wprintf(L"shutdown failed with error: %d\n", WSAGetLastError());
+		fwprintf(connection_log, L"shutdown failed with error: %d\n", WSAGetLastError());
 		closesocket(ConnectSocket);
 		WSACleanup();
 		return 1;
@@ -80,16 +88,25 @@ int upload_score(struct settings* set, char* player_name, int score) {
 
 	iResult = closesocket(ConnectSocket);
 	if (iResult == SOCKET_ERROR) {
-		wprintf(L"close failed with error: %d\n", WSAGetLastError());
+		fwprintf(connection_log, L"close failed with error: %d\n", WSAGetLastError());
 		WSACleanup();
 		return 1;
 	}
 
 	WSACleanup();
+	fprintf(connection_log, "Success\n");
 	return 0;
 }
 
 int download_score(struct settings* set) {
+	FILE* connection_log = fopen("connection_log.dat", "a");
+
+	SYSTEMTIME time;
+	GetLocalTime(&time);
+
+	fprintf(connection_log, "\nDownload process\n");
+	fprintf(connection_log, "Time:\n");
+	fprintf(connection_log, "%u.%02u.%02u %02u:%02u:%02u\n", time.wYear, time.wMonth, time.wDay, time.wHour, time.wMinute, time.wSecond);
 	//----------------------
 	// Declare and initialize variables.
 	int iResult;
@@ -106,7 +123,7 @@ int download_score(struct settings* set) {
 	// Initialize Winsock
 	iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
 	if (iResult != NO_ERROR) {
-		wprintf(L"WSAStartup failed with error: %d\n", iResult);
+		fwprintf(connection_log, L"WSAStartup failed with error: %d\n", iResult);
 		return 1;
 	}
 
@@ -114,7 +131,7 @@ int download_score(struct settings* set) {
 	// Create a SOCKET for connecting to server
 	ConnectSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (ConnectSocket == INVALID_SOCKET) {
-		wprintf(L"socket failed with error: %ld\n", WSAGetLastError());
+		fwprintf(connection_log, L"socket failed with error: %ld\n", WSAGetLastError());
 		WSACleanup();
 		return 1;
 	}
@@ -130,7 +147,7 @@ int download_score(struct settings* set) {
 	// Connect to server.
 	iResult = connect(ConnectSocket, (SOCKADDR*)&clientService, sizeof(clientService));
 	if (iResult == SOCKET_ERROR) {
-		wprintf(L"connect failed with error: %d\n", WSAGetLastError());
+		fwprintf(connection_log, L"connect failed with error: %d\n", WSAGetLastError());
 		closesocket(ConnectSocket);
 		WSACleanup();
 		return 1;
@@ -140,18 +157,18 @@ int download_score(struct settings* set) {
 	// Send an initial buffer
 	iResult = send(ConnectSocket, sendbuf, (int)strlen(sendbuf), 0);
 	if (iResult == SOCKET_ERROR) {
-		wprintf(L"send failed with error: %d\n", WSAGetLastError());
+		fwprintf(connection_log, L"send failed with error: %d\n", WSAGetLastError());
 		closesocket(ConnectSocket);
 		WSACleanup();
 		return 1;
 	}
 
-	printf("Bytes Sent: %d\n", iResult);
+	fprintf(connection_log, "Bytes Sent: %d\n", iResult);
 
 	// shutdown the connection since no more data will be sent
 	iResult = shutdown(ConnectSocket, SD_SEND);
 	if (iResult == SOCKET_ERROR) {
-		wprintf(L"shutdown failed with error: %d\n", WSAGetLastError());
+		fwprintf(connection_log, L"shutdown failed with error: %d\n", WSAGetLastError());
 		closesocket(ConnectSocket);
 		WSACleanup();
 		return 1;
@@ -162,11 +179,11 @@ int download_score(struct settings* set) {
 
 		iResult = recv(ConnectSocket, recvbuf, recvbuflen, 0);
 		if (iResult > 0)
-			wprintf(L"Bytes received: %d\n", iResult),printf(recvbuf);
+			fwprintf(connection_log, L"Bytes received: %d\n", iResult),printf(recvbuf);
 		else if (iResult == 0)
-			wprintf(L"Connection closed\n");
+			fwprintf(connection_log, L"Connection closed\n");
 		else
-			wprintf(L"recv failed with error: %d\n", WSAGetLastError());
+			fwprintf(connection_log, L"recv failed with error: %d\n", WSAGetLastError());
 
 	} while (iResult > 0);
 
@@ -174,11 +191,12 @@ int download_score(struct settings* set) {
 	// close the socket
 	iResult = closesocket(ConnectSocket);
 	if (iResult == SOCKET_ERROR) {
-		wprintf(L"close failed with error: %d\n", WSAGetLastError());
+		fwprintf(connection_log, L"close failed with error: %d\n", WSAGetLastError());
 		WSACleanup();
 		return 1;
 	}
 
 	WSACleanup();
+	fprintf(connection_log, "Success\n");
 	return 0;
 }

@@ -20,8 +20,9 @@
 
 ## 截图	Screenshots
 
-![游戏画面截图](https://doodlejump.nlstudio.jonbgua.com/img/screenshot-v1.2.0.png)
+<img src="https://doodlejump.nlstudio.jonbgua.com/img/welcome-screen-v1.3.2.png" alt="欢迎界面" style="zoom:90%;" />
 
+<img src="https://doodlejump.nlstudio.jonbgua.com/img/screenshot-v1.2.0.png" alt="游戏画面截图" style="zoom:90%;" />
 
 ## 主要贡献者	Main Contributors
 

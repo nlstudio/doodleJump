@@ -1,8 +1,10 @@
 #pragma once
+#define WIN32_LEAN_AND_MEAN
 #define _CRT_SECURE_NO_WARNINGS
 //#define DEBUG
 #include "front.cpp"
 #include "struct_def.h"
+#include "connect_to_server.h"
 #include "back_end.h"
 #include <time.h>
 #include <conio.h>
@@ -199,7 +201,8 @@ int main() {
 int main() {
 	init();
 	while(1)
-	{	SetConsoleActiveScreenBuffer(hOutput);
+		{	
+		SetConsoleActiveScreenBuffer(hOutput);
 		fflush(stdin);
 		char s=_getch();
 		switch(s)
@@ -210,7 +213,7 @@ int main() {
 			default:	continue; //防止你按错键 导致无法进入游戏 
 		}
 		
-		Sleep(1000); 
+		Sleep(300); 
 	}
 	system("pause");
 	return 0;
