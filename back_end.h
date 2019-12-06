@@ -179,6 +179,10 @@ void save_score(struct score* player_score, int* current_score, char* name, int 
 	if ((*current_score) != MAX_SCORE_NUMBER) {
 		(*current_score)++;
 	}
+	FILE* out = fopen("score_data.dat", "wb");
+	fwrite(current_score, sizeof(int), 1, out);
+	fwrite(player_score, sizeof(struct score), *current_score, out);
+	fclose(out);
 }
 
 void read_score(struct score* player_score, int* current_score) {
@@ -192,7 +196,7 @@ void read_score(struct score* player_score, int* current_score) {
 }
 
 void exit_game(struct score* player_score, int* current_score) {
-	FILE* out = fopen("score_data.dat", "w");
+	FILE* out = fopen("score_data.dat", "wb");
 	fwrite(current_score, sizeof(int), 1, out);
 	fwrite(player_score, sizeof(struct score), *current_score, out);
 	fclose(out);

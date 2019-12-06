@@ -1,11 +1,13 @@
 #pragma once
 #include "global_variable.cpp"
 #include "front_end.h"
+#include "back_end.h"
 #include <Windows.h>
 #include <conio.h>
 //int Map[set.map_height+1][set.map_width+1]={0,};
 int times = 0;
 int py;		//在Map中player位置为 (player.x, py) 
+void print_score(HANDLE handle) { return; }
 int render_player(struct player* pla,struct settings* set)
 {	
 	int flag = 0;
@@ -179,16 +181,7 @@ void game_rank()
 		}	
 	}
     
-    
-
-	
-	
-	
-	
-	
-	
 } 
-void print_score(HANDLE handle){ return ;}
 void in_name()
 {	char name[20];
 	HANDLE hOut;
@@ -216,10 +209,9 @@ void in_name()
 	SetConsoleTextAttribute(hOut, 12);
 	
 	fflush(stdin);
-	gets(name);
-	
+	//gets(name);
+	scanf("%s", name);
+	save_score(high_score, &current_score, name, set.line);
 
 	return ;
 }
-
-

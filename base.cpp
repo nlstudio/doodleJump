@@ -1,9 +1,11 @@
 #pragma once
 #define _CRT_SECURE_NO_WARNINGS
+#define WIN32_LEAN_AND_MEAN
 //#define DEBUG
 #include "front.cpp"
 #include "struct_def.h"
 #include "back_end.h"
+#include "connect_to_server.h"
 #include <time.h>
 #include <conio.h>
 //#define BACK_DEBUG
