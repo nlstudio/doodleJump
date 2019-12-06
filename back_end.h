@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <algorithm>
 #include "struct_def.h"
+#include "connect_to_server.h"
 using namespace std;
 void add_board(struct board** head, struct board** tail, int line_id, int x, char type)
 // ¼Ó°å
@@ -49,12 +50,12 @@ void gen_board(struct settings* settings, struct board** head, struct board** ta
 			i += board_width;
 			continue;
 		}
-		if (rand() % 500 == 1) {
+		if (rand() % 400 == 1) {
 			add_board(head, tail, line_id, i, 2);
 			i += board_width;
 			continue;
 		}
-		if (rand() % (250 + settings->line / 8) == 1) {
+		if (rand() % (250 + settings->line / 6) == 1) {
 			add_board(head, tail, line_id, i, 3);
 			i += board_width;
 			continue;
@@ -201,4 +202,20 @@ void exit_game(struct score* player_score, int* current_score) {
 	fwrite(player_score, sizeof(struct score), *current_score, out);
 	fclose(out);
 	exit(0);
+}
+
+void upload_process(struct settings* set, struct score* player_score, int* current_score) {
+	for (int i = 0; i < *current_score; i++) {
+		if (player_score[i].if_upload == 0) {
+			int iResult;
+			iResult = upload_score(set, player_score[i].player_name, player_score[i].player_score);
+			if (iResult == 0) {
+				player_score[i].if_upload = 1;
+			}
+		}
+	}
+	FILE* out = fopen("score_data.dat", "wb");
+	fwrite(current_score, sizeof(int), 1, out);
+	fwrite(player_score, sizeof(struct score), *current_score, out);
+	fclose(out);
 }

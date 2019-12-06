@@ -175,9 +175,10 @@ void game_rank()
     	fflush(stdin);
     	char a=_getch();
     	switch(a)
-    	{	case 'u':	break;
-   			case 'd':	break;
- 			default:	return; 	
+		{
+		case 'u':	upload_process(&set, high_score, &current_score); break;
+		case 'd':	break;
+		default:	return;
 		}	
 	}
     
