@@ -250,7 +250,7 @@ void game_rank()
 					case 'd':	break;
 					default:	break;
 				}
-			}
+			}break;
 		default:	return;
 		}
     		
