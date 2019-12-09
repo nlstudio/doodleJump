@@ -149,7 +149,7 @@ void print_score(struct score* _score,HANDLE hOut)
 	}
 	coord.X = 34;
 	coord.Y = 10;
-	for(int i=6;i<10;i++)
+	for(int i=5;i<10;i++)
 	{	WriteConsoleOutputCharacterA(hOut, a[i], 10, coord, &bytes);
 		coord.Y +=2;
 	}
@@ -163,7 +163,7 @@ void print_score(struct score* _score,HANDLE hOut)
 	}
 	coord.X = 45;
 	coord.Y = 10;
-	for(int i=6;i<10;i++)
+	for(int i=5;i<10;i++)
 	{	WriteConsoleOutputCharacterA(hOut, s[i], 3, coord, &bytes);
 		coord.Y +=2;
 	}
