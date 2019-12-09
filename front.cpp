@@ -4,6 +4,7 @@
 #include "back_end.h"
 #include <Windows.h>
 #include <conio.h>
+#include <string.h>
 //int Map[set.map_height+1][set.map_width+1]={0,};
 int times = 0;
 int py;		//在Map中player位置为 (player.x, py) 
@@ -129,11 +130,66 @@ void intro()
     return ;
 }
 
+void print_score(struct score* _score,HANDLE hOut)
+{	
+	char s[6][3],a[6][10];
+	for(int i=0;i<6;i++)
+	{	strncpy(a[i],(_score+i)->player_name,10);
+		int sc=(_score+i)->player_score;
+		s[i][0]=(sc/100==0?32:48+sc/100);
+		s[i][1]=(char)(48+(sc%100)/10);
+		s[i][2]=(char)(48+sc%10);
+	}
+	coord.X = 10;
+	coord.Y = 13;
+    WriteConsoleOutputCharacterA(hOut, a[0], 10, coord, &bytes);
+    coord.Y = 15;
+    WriteConsoleOutputCharacterA(hOut, a[1], 10, coord, &bytes);
+    coord.Y = 17;
+    WriteConsoleOutputCharacterA(hOut, a[2], 10, coord, &bytes);
+    coord.X = 35;
+	coord.Y = 13;
+    WriteConsoleOutputCharacterA(hOut, a[3], 10, coord, &bytes);
+    coord.Y = 15;
+    WriteConsoleOutputCharacterA(hOut, a[4], 10, coord, &bytes);
+    coord.Y = 17;
+    WriteConsoleOutputCharacterA(hOut, a[5], 10, coord, &bytes);
+    
+    
+	coord.X = 20;
+	coord.Y = 13;
+    WriteConsoleOutputCharacterA(hOut, s[0], 3, coord, &bytes);
+    coord.Y = 15;
+    WriteConsoleOutputCharacterA(hOut, s[1], 3, coord, &bytes);
+    coord.Y = 17;
+    WriteConsoleOutputCharacterA(hOut, s[2], 3, coord, &bytes);
+    coord.X = 45;
+	coord.Y = 13;
+    WriteConsoleOutputCharacterA(hOut, s[3], 3, coord, &bytes);
+    coord.Y = 15;
+    WriteConsoleOutputCharacterA(hOut, s[4], 3, coord, &bytes);
+    coord.Y = 17;
+    WriteConsoleOutputCharacterA(hOut, s[5], 3, coord, &bytes);
+	
+	
+	
+	
+	return;
+}
+
+
 void game_rank()
 {
 	char s[5][60]={" __                    _                         _ ","/ _\\ ___ ___  _ __ ___| |__   ___   __ _ _ __ __| |","\\ \\ / __/ _ \\| '__/ _ \\ '_ \\ / _ \\ / _` | '__/ _` |","_\\ \\ (_| (_) | | |  __/ |_) | (_) | (_| | | | (_| |","\\__/\\___\\___/|_|  \\___|_.__/ \\___/ \\__,_|_|  \\__,_|"};
-	HANDLE hOut;
+	HANDLE hOut,hOut2;
 	hOut = CreateConsoleScreenBuffer(
+        GENERIC_WRITE,//定义进程可以往缓冲区写数据
+        FILE_SHARE_WRITE,//定义缓冲区可共享写权限
+        NULL,
+        CONSOLE_TEXTMODE_BUFFER,
+        NULL
+    );
+    hOut2 = CreateConsoleScreenBuffer(
         GENERIC_WRITE,//定义进程可以往缓冲区写数据
         FILE_SHARE_WRITE,//定义缓冲区可共享写权限
         NULL,
@@ -144,42 +200,64 @@ void game_rank()
     cci.bVisible = 0;
     cci.dwSize = 1;
     SetConsoleCursorInfo(hOut, &cci);
+    SetConsoleCursorInfo(hOut2, &cci);
     coord.X = 5;
 	coord.Y = 3;
     WriteConsoleOutputCharacterA(hOut, s[0], 52, coord, &bytes);
+    WriteConsoleOutputCharacterA(hOut2, s[0], 52, coord, &bytes);
     coord.Y = 4;
     WriteConsoleOutputCharacterA(hOut, s[1], 52, coord, &bytes);
+    WriteConsoleOutputCharacterA(hOut2, s[1], 52, coord, &bytes);
     coord.Y = 5;
     WriteConsoleOutputCharacterA(hOut, s[2], 52, coord, &bytes);
+    WriteConsoleOutputCharacterA(hOut2, s[2], 52, coord, &bytes);
     coord.Y = 6;
     WriteConsoleOutputCharacterA(hOut, s[3], 52, coord, &bytes);
+    WriteConsoleOutputCharacterA(hOut2, s[3], 52, coord, &bytes);
     coord.Y = 7;
     WriteConsoleOutputCharacterA(hOut, s[4], 52, coord, &bytes);
+    WriteConsoleOutputCharacterA(hOut2, s[4], 52, coord, &bytes);
     
     
     coord.X = 6;
 	coord.Y = 20;
     WriteConsoleOutputCharacterA(hOut, "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _", 50, coord, &bytes);
-    
+    WriteConsoleOutputCharacterA(hOut2, "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _", 50, coord, &bytes);
+
     
     coord.X = 14;
 	coord.Y = 23;
-    WriteConsoleOutputCharacterA(hOut, "[ U ]  Upload your score", 25, coord, &bytes);
-    coord.Y = 25;
-    WriteConsoleOutputCharacterA(hOut, "[ D ]  Download the scoreboard", 25, coord, &bytes);
+    WriteConsoleOutputCharacterA(hOut2, "[ U ]  Upload your score", 25, coord, &bytes);
+    WriteConsoleOutputCharacterA(hOut, "[ G ]  Global", 18, coord, &bytes);
+	coord.Y = 25;
+    WriteConsoleOutputCharacterA(hOut2, "[ D ]  Download the scoreboard", 25, coord, &bytes);
+    
+    struct score g_score[MAX_SCORE_SERVER + 1];
     
     while(1)
     {
-    	print_score(hOut);
+    	print_score(high_score,hOut);
     	SetConsoleActiveScreenBuffer(hOut);
     	fflush(stdin);
     	char a=_getch();
     	switch(a)
 		{
-		case 'u':	upload_process(&set, high_score, &current_score); break;
-		case 'd':	break;
+		case 'g':
+			{	download_score(&set, g_score);
+				print_score(g_score,hOut2);
+				SetConsoleActiveScreenBuffer(hOut2);
+				fflush(stdin);
+    			char d=_getch();
+    			switch(d)
+				{
+					case 'u':	upload_process(&set, high_score, &current_score); break;
+					case 'd':	break;
+					default:	break;
+				}
+			}
 		default:	return;
-		}	
+		}
+    		
 	}
     
 } 
