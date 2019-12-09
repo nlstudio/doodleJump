@@ -200,7 +200,7 @@ int download_score(struct settings* set, struct score* server_score) {
 	while (!((*manage_score) == '\n' && (*(manage_score + 2)) == '\n')) {
 		manage_score++;
 	}
-	manage_score += 4;
+	manage_score += 3;
 	int i;
 	for (i = 0; (*manage_score) != '\0'; i++) {
 		int j = 0;
