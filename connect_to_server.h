@@ -201,7 +201,8 @@ int download_score(struct settings* set, struct score* server_score) {
 		manage_score++;
 	}
 	manage_score += 4;
-	for (int i = 0; (*manage_score) != '\0'; i++) {
+	int i;
+	for (i = 0; (*manage_score) != '\0'; i++) {
 		int j = 0;
 		while (*(manage_score + j) != ',') {
 			j++;
@@ -215,6 +216,7 @@ int download_score(struct settings* set, struct score* server_score) {
 		}
 		manage_score += 1;
 	}
+	server_score[i].player_score = -1;
 
 	// close the socket
 	iResult = closesocket(ConnectSocket);

@@ -132,10 +132,11 @@ void intro()
 
 void print_score(struct score* _score,HANDLE hOut)
 {	
-	char s[10][3],a[10][10];
+	char s[10][3] = {0}, a[10][10] = {0};
 	for(int i=0;i<10;i++)
 	{	strncpy(a[i],(_score+i)->player_name,10);
 		int sc=(_score+i)->player_score;
+		if (sc == -1) break;
 		s[i][0]=(sc/100==0?32:48+sc/100);
 		s[i][1]=(char)(48+(sc%100)/10);
 		s[i][2]=(char)(48+sc%10);
