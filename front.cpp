@@ -39,13 +39,14 @@ void show(struct player* pla,struct settings* set)
     
     coord.Y = 1;coord.X = set->map_width-20;
     
-    char s[15]={"your score:"};
+    char s[16]={"your score:"};
     /*static int score;
 	score=(pla->y > score ? pla->y:score);*/
-	s[12] = (set->line / 100 == 0 ? 32 : 48 + set->line / 100);
-	s[13] = (char)(48 + (set->line % 100) / 10);
-	s[14] = (char)(48 + set->line % 10);
-	WriteConsoleOutputCharacterA(hOutBuf, s, 15, coord, &bytes);
+	s[12] = (set->line / 1000 == 0 ? 32 : 48 + set->line / 1000);
+	s[13] = ((set->line / 100)%10 < 1 ? 32 : 48 + (set->line / 100)%10);
+	s[14] = (char)(48 + (set->line % 100) / 10);
+	s[15] = (char)(48 + set->line % 10);
+	WriteConsoleOutputCharacterA(hOutBuf, s, 16, coord, &bytes);
 	//设置新的缓冲区为活动显示缓冲
     SetConsoleActiveScreenBuffer(hOutBuf);
 }
@@ -71,12 +72,13 @@ void gameover(struct settings* set,struct player* pla)
 	WriteConsoleOutputCharacterA(hOutBuf, "gameover", 9, coord, &bytes);
 	
 	coord.X = set->map_width/3;coord.Y = set->map_height/2+1;
-	char s[15]={"your score:"};
+	char s[16]={"your score:"};
     int score=pla->y+1;
-	s[12]=(score/100==0?32:48+score/100);
-	s[13]=(char)(48+(score%100)/10);
-	s[14]=(char)(48+score%10); 
-	WriteConsoleOutputCharacterA(hOutBuf, s, 15, coord, &bytes);
+    s[12]=(score/1000 == 0?32 : 48+ score/1000 );
+	s[13]=((score/100) <1?32 : 48+ (score/100)%10 );
+	s[14]=(char)(48+(score%100)/10);
+	s[15]=(char)(48+score%10); 
+	WriteConsoleOutputCharacterA(hOutBuf, s, 16, coord, &bytes);
 	
 	coord.X = set->map_width/3;coord.Y = set->map_height/2+2;
 	WriteConsoleOutputCharacterA(hOutBuf, "按ENTER键继续", 14, coord, &bytes);
@@ -132,40 +134,41 @@ void intro()
 
 void print_score(struct score* _score,HANDLE hOut)
 {	
-	char s[10][3] = {0}, a[10][10] = {0};
+	char s[10][4] = {0}, a[10][15] = {0};
 	for(int i=0;i<10;i++)
-	{	strncpy(a[i],(_score+i)->player_name,10);
+	{	strncpy(a[i],(_score+i)->player_name,15);
 		int sc=(_score+i)->player_score;
 		if (sc == -1) break;
-		s[i][0]=(sc/100==0?32:48+sc/100);
-		s[i][1]=(char)(48+(sc%100)/10);
-		s[i][2]=(char)(48+sc%10);
+		s[i][0]=(sc/1000==0?32:48+sc/1000);
+		s[i][1]=( sc/100 <1?32:48+(sc/100)%10);
+		s[i][2]=(char)(48+(sc%100)/10);
+		s[i][3]=(char)(48+sc%10);
 	}
 	
 	coord.X = 9;
 	coord.Y = 10;
 	for(int i=0;i<5;i++)
-	{	WriteConsoleOutputCharacterA(hOut, a[i], 10, coord, &bytes);
+	{	WriteConsoleOutputCharacterA(hOut, a[i], 15, coord, &bytes);
 		coord.Y +=2;
 	}
 	coord.X = 34;
 	coord.Y = 10;
 	for(int i=5;i<10;i++)
-	{	WriteConsoleOutputCharacterA(hOut, a[i], 10, coord, &bytes);
+	{	WriteConsoleOutputCharacterA(hOut, a[i], 15, coord, &bytes);
 		coord.Y +=2;
 	}
 	
     
-	coord.X = 20;
+	coord.X = 23;
 	coord.Y = 10;
 	for(int i=0;i<5;i++)
-	{	WriteConsoleOutputCharacterA(hOut, s[i], 3, coord, &bytes);
+	{	WriteConsoleOutputCharacterA(hOut, s[i], 4, coord, &bytes);
 		coord.Y +=2;
 	}
-	coord.X = 45;
+	coord.X = 48;
 	coord.Y = 10;
 	for(int i=5;i<10;i++)
-	{	WriteConsoleOutputCharacterA(hOut, s[i], 3, coord, &bytes);
+	{	WriteConsoleOutputCharacterA(hOut, s[i], 4, coord, &bytes);
 		coord.Y +=2;
 	}
     
