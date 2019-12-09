@@ -224,37 +224,48 @@ void game_rank()
     coord.X = 14;
 	coord.Y = 23;
     WriteConsoleOutputCharacterA(hOut2, "[ U ]  Upload your score", 25, coord, &bytes);
-    WriteConsoleOutputCharacterA(hOut, "[ G ]  Global", 18, coord, &bytes);
+    WriteConsoleOutputCharacterA(hOut, "[ G ]  Global", 14, coord, &bytes);
 	coord.Y = 25;
-    WriteConsoleOutputCharacterA(hOut2, "[ D ]  Download the scoreboard", 25, coord, &bytes);
+    WriteConsoleOutputCharacterA(hOut2, "[ L ]  Local", 13, coord, &bytes);
+    WriteConsoleOutputCharacterA(hOut, "按 ENTER 返回", 14, coord, &bytes);
+    coord.Y = 27;
+    WriteConsoleOutputCharacterA(hOut2, "按 ENTER 返回", 14, coord, &bytes);
     
-    struct score g_score[MAX_SCORE_SERVER + 1];
+    struct score globle_score[MAX_SCORE_SERVER + 1];
     
-    while(1)
+	print_score(high_score,hOut);
+    l_score:
     {
-    	print_score(high_score,hOut);
     	SetConsoleActiveScreenBuffer(hOut);
     	fflush(stdin);
     	char a=_getch();
     	switch(a)
 		{
-		case 'g':
-			{	download_score(&set, g_score);
-				print_score(g_score,hOut2);
-				SetConsoleActiveScreenBuffer(hOut2);
-				fflush(stdin);
-    			char d=_getch();
-    			switch(d)
-				{
-					case 'u':	upload_process(&set, high_score, &current_score); break;
-					case 'd':	break;
-					default:	break;
-				}
-			}break;
-		default:	return;
+			case 'g':	goto g_score;break;
+			case  13:	return;
+			default:	break;
 		}
-    		
+    	goto l_score;	
 	}
+    
+    g_score:
+    {	download_score(&set, globle_score);
+		print_score(globle_score,hOut2);
+		SetConsoleActiveScreenBuffer(hOut2);
+		fflush(stdin);
+    	char d=_getch();
+    	switch(d)
+		{
+			case 'u':	upload_process(&set, high_score, &current_score); break;
+			case 'l':	goto l_score;break;
+			case  13:	return;
+			default:	break;
+		}
+		goto g_score;	
+	}
+    
+    
+    
     
 } 
 void in_name()
