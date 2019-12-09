@@ -132,48 +132,43 @@ void intro()
 
 void print_score(struct score* _score,HANDLE hOut)
 {	
-	char s[6][3],a[6][10];
-	for(int i=0;i<6;i++)
+	char s[10][3],a[10][10];
+	for(int i=0;i<10;i++)
 	{	strncpy(a[i],(_score+i)->player_name,10);
 		int sc=(_score+i)->player_score;
 		s[i][0]=(sc/100==0?32:48+sc/100);
 		s[i][1]=(char)(48+(sc%100)/10);
 		s[i][2]=(char)(48+sc%10);
 	}
-	coord.X = 10;
-	coord.Y = 13;
-    WriteConsoleOutputCharacterA(hOut, a[0], 10, coord, &bytes);
-    coord.Y = 15;
-    WriteConsoleOutputCharacterA(hOut, a[1], 10, coord, &bytes);
-    coord.Y = 17;
-    WriteConsoleOutputCharacterA(hOut, a[2], 10, coord, &bytes);
-    coord.X = 35;
-	coord.Y = 13;
-    WriteConsoleOutputCharacterA(hOut, a[3], 10, coord, &bytes);
-    coord.Y = 15;
-    WriteConsoleOutputCharacterA(hOut, a[4], 10, coord, &bytes);
-    coord.Y = 17;
-    WriteConsoleOutputCharacterA(hOut, a[5], 10, coord, &bytes);
-    
+	
+	coord.X = 9;
+	coord.Y = 10;
+	for(int i=0;i<5;i++)
+	{	WriteConsoleOutputCharacterA(hOut, a[i], 10, coord, &bytes);
+		coord.Y +=2;
+	}
+	coord.X = 34;
+	coord.Y = 10;
+	for(int i=6;i<10;i++)
+	{	WriteConsoleOutputCharacterA(hOut, a[i], 10, coord, &bytes);
+		coord.Y +=2;
+	}
+	
     
 	coord.X = 20;
-	coord.Y = 13;
-    WriteConsoleOutputCharacterA(hOut, s[0], 3, coord, &bytes);
-    coord.Y = 15;
-    WriteConsoleOutputCharacterA(hOut, s[1], 3, coord, &bytes);
-    coord.Y = 17;
-    WriteConsoleOutputCharacterA(hOut, s[2], 3, coord, &bytes);
-    coord.X = 45;
-	coord.Y = 13;
-    WriteConsoleOutputCharacterA(hOut, s[3], 3, coord, &bytes);
-    coord.Y = 15;
-    WriteConsoleOutputCharacterA(hOut, s[4], 3, coord, &bytes);
-    coord.Y = 17;
-    WriteConsoleOutputCharacterA(hOut, s[5], 3, coord, &bytes);
-	
-	
-	
-	
+	coord.Y = 10;
+	for(int i=0;i<5;i++)
+	{	WriteConsoleOutputCharacterA(hOut, s[i], 3, coord, &bytes);
+		coord.Y +=2;
+	}
+	coord.X = 45;
+	coord.Y = 10;
+	for(int i=6;i<10;i++)
+	{	WriteConsoleOutputCharacterA(hOut, s[i], 3, coord, &bytes);
+		coord.Y +=2;
+	}
+    
+    
 	return;
 }
 
