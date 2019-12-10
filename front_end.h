@@ -68,8 +68,8 @@ void render_boards(struct board* head, struct settings* set, char*** Map)
 // 将链表生成数组Map 
 {
 	struct board* p = head;
-	for (int i = 1; i <= set->map_height; i++)
-		for (int j = 1; j <= set->map_width; j++)
+	for (int i = 0; i <= set->map_height; i++)
+		for (int j = 0; j <= set->map_width; j++)
 		{
 			(*Map)[i][j] = ' ';
 		}

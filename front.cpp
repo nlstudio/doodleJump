@@ -26,6 +26,7 @@ int render_player(struct player* pla,struct settings* set)
 void show(struct player* pla,struct settings* set)
 //´òÓ¡°å
 {
+	print_frame(set,hOutBuf);
 	for(int i=pla->x-set->player_width/2;i<=pla->x+set->player_width/2;i++)
 	for(int j=py-set->player_height+1;j<=py;j++)
 	{   Map[j][i]='*';
