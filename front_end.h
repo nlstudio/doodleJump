@@ -75,7 +75,7 @@ void render_boards(struct board* head, struct settings* set, char*** Map)
 		}
 	while (p != NULL)
 	{
-		if (set->map_height - p->line_id + set->line > 0 && set->line <= p->line_id)
+		if (set->map_height - p->line_id + set->line > 1 && set->line <= p->line_id)
 		{
 			for (int j = p->x; j < p->x + set->map_board_length; j++)
 			{
