@@ -29,10 +29,10 @@ void start_game() {
 		//更新x方向位置
 		player1.x += (key_state * set.velocity_LR);
 		if (player1.x <= 1) {
-			player1.x = 1;
+			player1.x = set.map_width - 1;
 		}
 		if (player1.x >= set.map_width) {
-			player1.x = set.map_width;
+			player1.x = 1;
 		}
 		//更新y方向位置
 		if (player1.remain_bounce_line > 0) {

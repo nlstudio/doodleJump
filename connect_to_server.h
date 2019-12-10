@@ -174,18 +174,6 @@ int download_score(struct settings* set, struct score* server_score) {
 		return 1;
 	}
 
-	// Receive until the peer closes the connection
-	/*do {
-
-		iResult = recv(ConnectSocket, recvbuf, recvbuflen, 0);
-		if (iResult > 0)
-			fwprintf(connection_log, L"Bytes received: %d\n", iResult),printf(recvbuf);
-		else if (iResult == 0)
-			fwprintf(connection_log, L"Connection closed\n");
-		else
-			fwprintf(connection_log, L"recv failed with error: %d\n", WSAGetLastError());
-
-	} while (iResult > 0);*/
 	iResult = recv(ConnectSocket, recvbuf, recvbuflen, 0);
 	if (iResult > 0) {
 		fwprintf(connection_log, L"Bytes received: %d\n", iResult);
