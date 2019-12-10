@@ -5,7 +5,7 @@
 #include "struct_def.h"
 #include "connect_to_server.h"
 using namespace std;
-void add_board(struct board** head, struct board** tail, int line_id, int x, char type)
+void add_board(struct board** head, struct board** tail, int line_id, int x, char type, int if_moveable, int move_velocity, int move_direction)
 // 加板
 {
 	struct board* p = (struct board*)malloc(sizeof(struct board));
@@ -15,6 +15,9 @@ void add_board(struct board** head, struct board** tail, int line_id, int x, cha
 	p->line_id = line_id;
 	p->x = x;
 	p->type = type;
+	p->if_moveable = if_moveable;
+	p->move_velocity = p->move_count = move_velocity;
+	p->move_direction = move_direction;
 	p->next = NULL;
 	if (*head == NULL) {
 		*head = *tail = p;
@@ -43,20 +46,24 @@ void gen_board(struct settings* settings, struct board** head, struct board** ta
 {
 	int board_width = settings->map_board_length;
 	int map_width = settings->map_width - board_width;
+	if (rand() % 7 == 1) {
+		add_board(head, tail, line_id, rand() % map_width + 1, rand() % 3 + 1, 1, 2, rand() % 2 == 1 ? 1 : -1);
+		return;
+	}
 	for (int i = 1; i <= map_width; i++) {
 		// 大概五分之一概率加一个板，初始化的时候重置一下种子，以后看能不能在设置里面定义概率
 		if (rand() % (20 + settings->line / 8) == 1) {
-			add_board(head, tail, line_id, i, 1);
+			add_board(head, tail, line_id, i, 1, 0, 0, 0);
 			i += board_width;
 			continue;
 		}
 		if (rand() % 400 == 1) {
-			add_board(head, tail, line_id, i, 2);
+			add_board(head, tail, line_id, i, 2, 0, 0, 0);
 			i += board_width;
 			continue;
 		}
 		if (rand() % (250 + settings->line / 6) == 1) {
-			add_board(head, tail, line_id, i, 3);
+			add_board(head, tail, line_id, i, 3, 0, 0, 0);
 			i += board_width;
 			continue;
 		}
@@ -69,6 +76,30 @@ void multi_gen_board(struct settings* set, struct board** head, struct board** t
 	while (start_line_id <= end_line_id) {
 		gen_board(set, head, tail, start_line_id);
 		start_line_id++;
+	}
+}
+
+void move_board(struct settings* set, struct board* board_head) {
+	int map_height = set->map_height;
+	int map_width = set->map_width - set->map_board_length;
+	struct board* p = board_head;
+	while (p != NULL && (p->line_id >= set->line && (p->line_id) <= (set->line + map_height))) {
+		if (p->if_moveable) {
+			if (p->move_count == 0) {
+				p->x += p->move_direction;
+				p->move_count = p->move_velocity;
+				if (p->x == 1 || p->x == map_width) {
+					p->move_direction *= (-1);
+				}
+			}
+			else {
+				p->move_count--;
+			}
+			p = p->next;
+			continue;
+		}
+		p = p->next;
+		continue;
 	}
 }
 

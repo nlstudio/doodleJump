@@ -19,7 +19,7 @@ void start_game() {
 	player1.pre_board = 1;
 	player1.pre_board_type = 1;
 	player1.remain_bounce_line = set.remain_bounce_line;
-	add_board(&head, &tail, 1, (set.map_width >> 1) - 1, 1);
+	add_board(&head, &tail, 1, (set.map_width >> 1) - 1, 1, 0, 0, 0);
 	multi_gen_board(&set, &head, &tail, 4, 100);
 	int current_board = 100;  //记录当前板生成到了哪一行
 	while (1) {
@@ -57,6 +57,8 @@ void start_game() {
 			multi_gen_board(&set, &head, &tail, current_board + 1, current_board + 100);
 			current_board += 100;
 		}
+		//处理板的移动情况
+		move_board(&set, head);
 		//判断是否坠入虚空
 		if (drop_into_void(&set, &player1)) {
 			gameover(&set,&player1);

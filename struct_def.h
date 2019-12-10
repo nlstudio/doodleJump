@@ -29,6 +29,10 @@ struct board {
 	int line_id;                  //板所在行
 	int x;                        //左端点位置
 	char type;                    //板的类型，默认为1
+	int if_moveable;              //是否可移动
+	int move_velocity;            //移动速度（几个count移动一次）
+	int move_count;               //还剩几次移动
+	int move_direction;           //向左为-1，向右为1
 	struct board* next;           //下一个节点
 };
 
