@@ -88,8 +88,13 @@ void move_board(struct settings* set, struct board* board_head) {
 			if (p->move_count == 0) {
 				p->x += p->move_direction;
 				p->move_count = p->move_velocity;
-				if (p->x == 1 || p->x == map_width) {
+				if (p->x <= 1) {
 					p->move_direction *= (-1);
+					p->x = 2;
+				}
+				if (p->x >= map_width) {
+					p->move_direction *= (-1);
+					p->x = map_width - 1;
 				}
 			}
 			else {
