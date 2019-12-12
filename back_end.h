@@ -2,6 +2,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <algorithm>
+#include<windows.h>
+#include<MMSystem.h>
+#pragma comment(lib,"winmm.lib")
 #include "struct_def.h"
 #include "connect_to_server.h"
 using namespace std;
@@ -121,9 +124,12 @@ int land_on_board(struct settings* set, struct board* board_HEAD, struct player*
 			Player->y += 1;
 			if (board_HEAD->type == 3) {
 				board_HEAD->type = 4;
+				PlaySound("pa.wav",NULL,SND_FILENAME | SND_ASYNC );
 				return 3;
 			}
-			
+			if (board_HEAD->type == 2) 
+			{	PlaySound("spring.wav",NULL,SND_FILENAME | SND_ASYNC );
+			} 
 			return board_HEAD->type;
 		}
 		board_HEAD = board_HEAD->next;

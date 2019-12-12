@@ -3,6 +3,8 @@
 #include "front_end.h"
 #include "back_end.h"
 #include <Windows.h>
+#include<MMSystem.h>
+#pragma comment(lib,"winmm.lib")
 #include <conio.h>
 #include <string.h>
 //int Map[set.map_height+1][set.map_width+1]={0,};
@@ -86,6 +88,10 @@ void gameover(struct settings* set,struct player* pla)
 
 	SetConsoleActiveScreenBuffer(hOutBuf);
 	//设置新的缓冲区为活动显示缓冲
+	
+	PlaySound("a.wav",NULL,SND_FILENAME | SND_ASYNC);
+	Sleep(3700); 
+	PlaySound(NULL,NULL,SND_FILENAME | SND_ASYNC);
 }
 
 void intro()
